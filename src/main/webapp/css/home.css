@@ -1,0 +1,83 @@
+.hero-title,
+.section-title {
+    font-family: Poppins, sans-serif;
+}
+
+.container-hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero {
+    background: url("../images/hero.webp") center center/cover no-repeat;
+    color: #fff;
+    padding: 100px 0;
+}
+.hero-title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #000;
+}
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: #000;
+    margin-bottom: 2rem;
+}
+.hero-btn {
+    font-size: 1.2rem;
+    padding: 0.75rem 1.5rem;
+}
+
+.section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.feature-card {
+    margin-bottom: 2rem;
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #4f46e5;
+}
+
+.feature-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature-description {
+    font-size: 1rem;
+    color: #000;
+}
+
+.testimonial {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
+}
+.testimonial-text {
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+.testimonial-author {
+    font-weight: 700;
+    text-align: right;
+}
+
+.newsletter {
+    background: #f9f9f9;
+    padding: 2rem 0;
+}
+.newsletter-form .input-group {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/*# sourceMappingURL=home.css.map */
