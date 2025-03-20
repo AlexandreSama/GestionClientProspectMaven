@@ -1,16 +1,39 @@
 package models;
 
+/**.
+ * Classe métier abstract pour une société
+ */
 public abstract class Societe {
+    /**.
+     * Identifiant de la société
+     */
     private Integer identifiant = null;
+    /**.
+     * Adresse de la société
+     */
     private Adresse adresse;
+    /**.
+     * Email de la société
+     */
     private String adresseMail;
+    /**.
+     * Commentaire de la société
+     */
     private String commentaire;
+    /**.
+     * Téléphone de la société
+     */
     private String telephone;
+    /**.
+     * Raison Sociale de la société
+     */
     private String raisonSociale;
 
-    /**
-     * Constructeur pour initialiser une société avec les informations de base.
-     * Les setters sont utilisés pour appliquer la validation sur chaque attribut.
+    /**.
+     * Constructeur pour initialiser une
+     * société avec les informations de base.
+     * Les setters sont utilisés pour
+     * appliquer la validation sur chaque attribut.
      *
      * @param adresse        Adresse de la société.
      * @param adresseMail    Adresse e-mail de la société.
@@ -18,8 +41,9 @@ public abstract class Societe {
      * @param raisonSociale  Raison sociale de la société.
      * @param telephone      Numéro de téléphone de la société.
      */
-    public Societe(Adresse adresse, String adresseMail, String commentaire, String raisonSociale, String telephone) {
-        // Les setters effectuent la validation des données.
+    public Societe(final Adresse adresse, final String adresseMail,
+                   final String commentaire, final String raisonSociale,
+                   final String telephone) {
         setAdresse(adresse);
         setAdresseMail(adresseMail);
         setCommentaire(commentaire);
@@ -27,7 +51,7 @@ public abstract class Societe {
         setRaisonSociale(raisonSociale);
     }
 
-    /**
+    /**.
      * Retourne l'adresse de la société.
      *
      * @return Adresse de la société.
@@ -36,16 +60,16 @@ public abstract class Societe {
         return adresse;
     }
 
-    /**
+    /**.
      * Définit l'adresse de la société.
      *
      * @param adresse Adresse à définir.
      */
-    public void setAdresse(Adresse adresse) {
+    public void setAdresse(final Adresse adresse) {
         this.adresse = adresse;
     }
 
-    /**
+    /**.
      * Retourne l'adresse e-mail de la société.
      *
      * @return Adresse e-mail de la société.
@@ -54,16 +78,16 @@ public abstract class Societe {
         return adresseMail;
     }
 
-    /**
+    /**.
      * Définit l'adresse e-mail de la société.
      *
      * @param adresseMail Adresse e-mail à définir.
      */
-    public void setAdresseMail(String adresseMail) {
+    public void setAdresseMail(final String adresseMail) {
         this.adresseMail = adresseMail;
     }
 
-    /**
+    /**.
      * Retourne le commentaire sur la société.
      *
      * @return Commentaire sur la société.
@@ -72,16 +96,16 @@ public abstract class Societe {
         return commentaire;
     }
 
-    /**
+    /**.
      * Définit un commentaire pour la société.
      *
      * @param commentaire Commentaire à définir.
      */
-    public void setCommentaire(String commentaire) {
+    public void setCommentaire(final String commentaire) {
         this.commentaire = commentaire != null ? commentaire.trim() : null;
     }
 
-    /**
+    /**.
      * Retourne l'identifiant unique de la société.
      *
      * @return Identifiant de la société.
@@ -90,15 +114,15 @@ public abstract class Societe {
         return identifiant;
     }
 
-    /**
+    /**.
      * Définit un identifiant pour la société
      * @param identifiant l'identifiant a donner pour cet société
      */
-    public void setIdentifiant(Integer identifiant) {
+    public void setIdentifiant(final Integer identifiant) {
         this.identifiant = identifiant;
     }
 
-    /**
+    /**.
      * Retourne la raison sociale de la société.
      *
      * @return Raison sociale de la société.
@@ -107,16 +131,16 @@ public abstract class Societe {
         return raisonSociale;
     }
 
-    /**
+    /**.
      * Définit la raison sociale de la société.
      *
      * @param raisonSociale Raison sociale à définir.
      */
-    public void setRaisonSociale(String raisonSociale) {
+    public void setRaisonSociale(final String raisonSociale) {
         this.raisonSociale = raisonSociale;
     }
 
-    /**
+    /**.
      * Retourne le numéro de téléphone de la société.
      *
      * @return Numéro de téléphone de la société.
@@ -125,12 +149,12 @@ public abstract class Societe {
         return telephone;
     }
 
-    /**
+    /**.
      * Définit le numéro de téléphone de la société.
      *
      * @param telephone Numéro de téléphone à définir.
      */
-    public void setTelephone(String telephone) {
+    public void setTelephone(final String telephone) {
         this.telephone = telephone.trim();
     }
 }

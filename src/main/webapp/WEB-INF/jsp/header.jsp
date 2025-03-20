@@ -23,12 +23,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav">
-                    <a href="#" class="nav-item nav-link" id="listeClientBtn">Gérer vos clients</a>
-                    <a href="#" class="nav-item nav-link" id="listeProspectBtn">Gérer vos prospects</a>
+                    <a href="?cmd=clients/view" class="nav-item nav-link" id="listeClientBtn">Gérer vos clients</a>
+                    <a href="?cmd=prospects/view" class="nav-item nav-link" id="listeProspectBtn">Gérer vos prospects</a>
                 </div>
                 <div class="navbar-nav ms-auto">
                     <!-- Version pour utilisateur non connecté -->
-                    <a href="user/login.jsp" class="btn loginBtn" id="loginBtn">Se connecter</a>
+                    <a href="?cmd=user/login" class="btn loginBtn" id="loginBtn">Se connecter</a>
 
                     <!-- Version pour utilisateur connecté, cachée par défaut -->
                     <div class="nav-item dropdown d-none" id="userDropdownContainer">

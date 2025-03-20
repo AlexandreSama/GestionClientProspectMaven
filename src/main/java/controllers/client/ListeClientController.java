@@ -4,9 +4,22 @@ import controllers.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**.
+ * Controller servant pour la page de liste de client
+ * {@inheritDoc}
+ */
 public class ListeClientController implements ICommand {
-    @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+    /**.
+     * Méthode d'éxécution du controller
+     * @param request - La requête reçu
+     * @param response - La réponse a renvoyer si besoin
+     * @return Le nom de la page demandé
+     * @throws Exception - Une exception au cas ou
+     */
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws Exception {
         return "client/listeClient.jsp";
     }
 }

@@ -3,14 +3,29 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+/**.
+ * Classe métier pour un client
+ */
 public class Client extends Societe {
 
+    /**.
+     * Identifiant du client
+     */
     private Integer identifiantClient = null;
+    /**.
+     * chiffre d'affaire du client
+     */
     private long chiffreAffaire;
+    /**.
+     * Nombre d'employés du client
+     */
     private int nbrEmploye;
+    /**.
+     * Liste de contrats du client
+     */
     private final List<Contrat> contrats = new ArrayList<>();
 
-    /**
+    /**.
      * Constructeur pour créer un client avec les informations spécifiées.
      *
      * @param identifiantClient Identifiant spécifique au client.
@@ -22,25 +37,26 @@ public class Client extends Societe {
      * @param chiffreAffaire    Chiffre d'affaires du client.
      * @param nbrEmploye        Nombre d'employés du client.
      */
-    public Client(Integer identifiantClient, Adresse adresse, String adresseMail, String commentaire,
-                  String raisonSociale, String telephone,
-                  long chiffreAffaire, int nbrEmploye) {
+    public Client(final Integer identifiantClient, final Adresse adresse,
+                  final String adresseMail, final String commentaire,
+                  final String raisonSociale, final String telephone,
+                  final long chiffreAffaire, final int nbrEmploye) {
         super(adresse, adresseMail, commentaire, raisonSociale, telephone);
         setIdentifiantClient(identifiantClient);
         setChiffreAffaire(chiffreAffaire);
         setNbrEmploye(nbrEmploye);
     }
 
-    /**
+    /**.
      * Définit l'identifiant spécifique du client.
      *
      * @param identifiantClient Identifiant du client.
      */
-    public void setIdentifiantClient(Integer identifiantClient) {
+    public void setIdentifiantClient(final Integer identifiantClient) {
         this.identifiantClient = identifiantClient;
     }
 
-    /**
+    /**.
      * Retourne l'identifiant spécifique du client.
      *
      * @return Identifiant du client.
@@ -49,7 +65,7 @@ public class Client extends Societe {
         return identifiantClient;
     }
 
-    /**
+    /**.
      * Retourne le chiffre d'affaires du client.
      *
      * @return Chiffre d'affaires.
@@ -58,16 +74,16 @@ public class Client extends Societe {
         return chiffreAffaire;
     }
 
-    /**
+    /**.
      * Définit le chiffre d'affaires du client après validation.
      *
      * @param chiffreAffaire Chiffre d'affaires à définir.
      */
-    public void setChiffreAffaire(long chiffreAffaire)  {
+    public void setChiffreAffaire(final long chiffreAffaire)  {
         this.chiffreAffaire = chiffreAffaire;
     }
 
-    /**
+    /**.
      * Retourne le nombre d'employés du client.
      *
      * @return Nombre d'employés.
@@ -76,33 +92,64 @@ public class Client extends Societe {
         return nbrEmploye;
     }
 
-    /**
+    /**.
      * Définit le nombre d'employés du client après validation.
      *
      * @param nbrEmploye Nombre d'employés à définir.
      */
-    public void setNbrEmploye(int nbrEmploye) {
+    public void setNbrEmploye(final int nbrEmploye) {
         this.nbrEmploye = nbrEmploye;
     }
 
+    /**.
+     * Méthode toString pour récupérer l'ensemble
+     * des infos de l'objet
+     * @return Les infos complétes de l'objet
+     */
     @Override
     public String toString() {
-        return "Client{" +
-                "id=" + getIdentifiant() +
-                ", raisonSociale='" + getRaisonSociale() + '\'' +
-                ", telephone='" + getTelephone() + '\'' +
-                ", email='" + getAdresseMail() + '\'' +
-                ", chiffreAffaire=" + getChiffreAffaire() +
-                ", nbrEmploye=" + getNbrEmploye() +
-                ", adresse=" + (getAdresse() != null ? getAdresse().toString() : "null") +
+        return "Client{"
+                +
+                "id="
+                + getIdentifiant()
+                +
+                ", raisonSociale='"
+                + getRaisonSociale()
+                + '\''
+                +
+                ", telephone='"
+                + getTelephone()
+                + '\''
+                +
+                ", email='"
+                + getAdresseMail()
+                + '\''
+                +
+                ", chiffreAffaire="
+                + getChiffreAffaire()
+                +
+                ", nbrEmploye="
+                + getNbrEmploye()
+                +
+                ", adresse="
+                + (getAdresse() != null ? getAdresse().toString() : "null")
+                +
                 '}';
     }
 
+    /**.
+     * Récupère la liste des contrats
+     * @return une liste de contrats
+     */
     public List<Contrat> getContrats() {
         return contrats;
     }
 
-    public void addContrat(Contrat contrat) {
+    /**.
+     * Ajoute un contrat au client
+     * @param contrat Un objet Contrat
+     */
+    public void addContrat(final Contrat contrat) {
         this.contrats.add(contrat);
     }
 }

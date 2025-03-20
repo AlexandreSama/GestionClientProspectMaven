@@ -1,6 +1,7 @@
 package router;
 
 import controllers.ContactController;
+import controllers.MentionsController;
 import controllers.PageAccueilController;
 import controllers.ICommand;
 import controllers.client.CreateClientController;
@@ -11,6 +12,7 @@ import controllers.prospect.CreateProspectController;
 import controllers.prospect.DeleteProspectController;
 import controllers.prospect.ListeProspectController;
 import controllers.prospect.UpdateProspectController;
+import controllers.user.LoginController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,12 +23,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@WebServlet(name = "Accueil", value = "/")
+@WebServlet(name = "front", value = "/front")
 public class FrontController extends HttpServlet {
-    // Utilisation des generics pour préciser la clé (String) et la valeur (ICommand)
-    private Map<String, Object> commands = new HashMap<>();
-    private static final Logger LOGGER = Logger.getLogger(FrontController.class.getName());
 
+    /**.
+     * Map des commandes menant aux controllers
+     */
+    private Map<String, Object> commands = new HashMap<>();
+    /**.
+     * Le classique LOGGER
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(FrontController.class.getName());
+
+    /**.
+     * La méthode d'initialisation
+     * du controller
+     */
     @Override
     public void init() {
         // Enregistrement des commandes pour les Clients
@@ -39,15 +52,24 @@ public class FrontController extends HttpServlet {
         commands.put("prospects/add", new CreateProspectController());
         commands.put("prospects/update", new UpdateProspectController());
         commands.put("prospects/delete", new DeleteProspectController());
+        // Enregistrement des commandes pour l'utilisateur
+        commands.put("user/login", new LoginController());
         // Enregistrement des commandes a part
         commands.put("contact", new ContactController());
+        commands.put("mentions", new MentionsController());
         // Enregistrement par défaut (pour les requêtes sans paramètre "cmd")
         commands.put(null, new PageAccueilController());
         commands.put("index", new PageAccueilController());
 
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+    /**.
+     * Méthode pour gérer la requête
+     * @param request la requête reçu
+     * @param response la réponse a envoyer
+     */
+    protected void processRequest(final HttpServletRequest request,
+                                  final HttpServletResponse response) {
         String urlSuite = "";
         try {
             // Récupération du paramètre "cmd" passé dans l'URL
@@ -60,21 +82,35 @@ public class FrontController extends HttpServlet {
             urlSuite = "erreur.jsp";
         } finally {
             try {
-                request.getRequestDispatcher("WEB-INF/JSP/" + urlSuite).forward(request, response);
-//                request.getRequestDispatcher(urlSuite).forward(request, response);
+                request.getRequestDispatcher("WEB-INF/jsp/"
+                        + urlSuite).forward(request, response);
             } catch (ServletException | IOException e) {
                 LOGGER.severe("Erreur lors du forward : " + e.getMessage());
             }
         }
     }
 
+    /**.
+     * Méthode en cas de requête de type GET
+     */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+    protected void doGet(final HttpServletRequest request,
+                         final HttpServletResponse response) {
         processRequest(request, response);
     }
 
+    /**.
+     * Méthode en cas de requête de type POST
+     */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    protected void doPost(final HttpServletRequest request,
+                          final HttpServletResponse response) {
         processRequest(request, response);
+    }
+
+    /**.
+     * Méthode destroy pour le controller
+     */
+    public void destroy() {
     }
 }

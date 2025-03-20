@@ -1,14 +1,14 @@
-package controllers.client;
+package controllers.user;
 
 import controllers.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**.
- * Controller servant pour la page Création Client
+ * Controller servant pour la page de connexion
  * {@inheritDoc}
  */
-public class CreateClientController implements ICommand {
+public class LoginController implements ICommand {
 
     /**.
      * Méthode d'éxécution du controller
@@ -20,6 +20,6 @@ public class CreateClientController implements ICommand {
     public String execute(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws Exception {
-        return "client/createClient.jsp";
+        return "user/login.jsp";
     }
 }
