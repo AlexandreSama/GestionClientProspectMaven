@@ -4,6 +4,7 @@ import controllers.ICommand;
 import controllers.user.UserForm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,7 +38,9 @@ public class ListeClientController implements ICommand {
                           final HttpServletResponse response)
             throws Exception {
             try{
-                String sql = "SELECT * FROM client";
+                HttpSession session = request.getSession();
+                String userId = session.getAttribute("user_id").toString();
+                String sql = "SELECT * FROM client WHERE ";
                 PreparedStatement ps = connection.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
                 if(rs.next()){
@@ -53,6 +56,6 @@ public class ListeClientController implements ICommand {
                 LOGGER.info("Erreur SQL: " + e.getMessage());
                 return "index.jsp";
             }
-//        return "client/listeClient.jsp";
+        return "client/listeClient.jsp";
     }
 }

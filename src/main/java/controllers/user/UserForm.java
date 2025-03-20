@@ -79,12 +79,14 @@ public class UserForm implements ICommand {
 
             if (rs.next()) {
                 String storedHash = rs.getString("pwd");
+                Integer userId = rs.getInt("id");
 
                 // Vérification du mot de passe fourni avec le hash stocké
                 Argon2 argon2 = Argon2Factory.create();
                 if (argon2.verify(storedHash, password.toCharArray())) {
                     HttpSession session = request.getSession();
                     session.setAttribute("user", username);
+                    session.setAttribute("user_id", userId);
                     session.setAttribute("hasRights",
                             Arrays.asList("Supprimer", "Modifier", "Créer"));
                     session.setAttribute("success",
