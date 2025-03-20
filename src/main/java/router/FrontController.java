@@ -14,6 +14,7 @@ import controllers.prospect.ListeProspectController;
 import controllers.prospect.UpdateProspectController;
 import controllers.user.LoginController;
 import controllers.user.UserForm;
+import controllers.user.UserLogout;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -81,6 +82,7 @@ public class FrontController extends HttpServlet {
         commands.put("prospects/delete", new DeleteProspectController());
         // Enregistrement des commandes pour l'utilisateur
         commands.put("user/login", new LoginController());
+        commands.put("user/logout", new UserLogout());
 //        commands.put("create-user", new CreateUserController(connection));
         commands.put("valider-login", new UserForm(connection));
         // Enregistrement des commandes a part

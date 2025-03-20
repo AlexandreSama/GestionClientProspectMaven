@@ -28,19 +28,22 @@
                 </div>
                 <div class="navbar-nav ms-auto">
                     <!-- Version pour utilisateur non connecté -->
+                    <c:if test="${empty sessionScope.user}">
                     <a href="?cmd=user/login" class="btn loginBtn" id="loginBtn">Se connecter</a>
-
+                    </c:if>
                     <!-- Version pour utilisateur connecté, cachée par défaut -->
-                    <div class="nav-item dropdown d-none" id="userDropdownContainer">
+                    <c:if test="${not empty sessionScope.user}">
+                    <div class="nav-item dropdown" id="userDropdownContainer">
                         <a class="nav-link dropdown-toggle btn loginBtn" href="#" id="userDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             Mon Compte
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="#">Mon Profil</a></li>
-                            <li><a class="dropdown-item" href="#" id="disconnectBtn">Se déconnecter</a></li>
+                            <li><a class="dropdown-item" href="?cmd=user/logout" id="disconnectBtn">Se déconnecter</a></li>
                         </ul>
                     </div>
+                    </c:if>
                 </div>
             </div>
         </div>

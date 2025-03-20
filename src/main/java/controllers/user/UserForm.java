@@ -37,12 +37,8 @@ public class UserForm implements ICommand {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        LOGGER.info("username : " + username + " password : " + password);
-
         // Ici, on suppose que le constructeur de User attend (pwd, username)
         User user = new User(password, username);
-
-        LOGGER.info(user.toString());
 
         // Construction du Validator
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -50,7 +46,7 @@ public class UserForm implements ICommand {
 
         // Validation de l'objet User
         Set<ConstraintViolation<User>> violations = validator.validate(user);
-        LOGGER.info("violations : " + violations.toString());
+
         if (!violations.isEmpty()) {
             StringBuilder errorMessage = new StringBuilder();
             for (ConstraintViolation<User> violation : violations) {
@@ -93,16 +89,17 @@ public class UserForm implements ICommand {
                             Arrays.asList("Supprimer", "Modifier", "Créer"));
                     session.setAttribute("success",
                             "Connexion réussie pendant 30min");
+                    argon2.wipeArray(password.toCharArray());
                     return "index.jsp";
                 } else {
                     request.setAttribute("error",
-                            "Erreur, veuillez vérifier votre pseudonyme ou votre mot de passe");
+                            "Erreur, veuillez vérifier votre mot de passe");
                     LOGGER.info("Mot de passe incorrect pour l'utilisateur " + username);
                     return "user/login.jsp";
                 }
             } else {
                 request.setAttribute("error",
-                        "Erreur, veuillez vérifier votre pseudonyme ou votre mot de passe");
+                        "Erreur, veuillez vérifier votre pseudonyme");
                 LOGGER.info("Aucun utilisateur trouvé pour " + username);
                 return "user/login.jsp";
             }

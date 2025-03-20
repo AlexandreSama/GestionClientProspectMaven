@@ -1,4 +1,5 @@
 <%@ page pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,29 +9,55 @@
     <meta name="robots" content="index, follow">
     <title>Spark | Accueil</title>
     <link rel="shortcut icon" href="images/favicon(1).ico" type="image/x-icon">
-    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
 <%@ include file="header.jsp" %>
+
+<!-- Toast Container pour les messages -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <!-- Toast pour la réussite de connexion -->
+    <c:if test="${not empty sessionScope.success}">
+        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#007aff"></rect>
+                </svg>
+                <strong class="me-auto">Succès</strong>
+                <small>À l'instant</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                    ${sessionScope.success}
+            </div>
+        </div>
+    </c:if>
+    <!-- Toast pour la déconnexion -->
+    <c:if test="${not empty requestScope.logout}">
+        <div id="logoutToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#ff5252"></rect>
+                </svg>
+                <strong class="me-auto">Déconnexion</strong>
+                <small>À l'instant</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                    ${logout}
+            </div>
+        </div>
+    </c:if>
+</div>
+
 <main>
     <section class="hero text-center">
         <div class="container container-hero">
             <h1 class="hero-title">Bienvenue sur Spark</h1>
-            <!-- Affichage du message de succès et du pseudonyme de l'utilisateur connecté -->
-            <c:if test="${not empty sessionScope.user}">
-                <p class="hero-subtitle">
-                    Connexion réussie : ${sessionScope.success}<br>
-                    Bonjour, ${sessionScope.user} !
-                </p>
-                <p>
-                    Vos droits :
-                    <c:forEach var="right" items="${sessionScope.hasRights}">
-                        ${right}
-                    </c:forEach>
-                </p>
-            </c:if>
             <p class="hero-subtitle">
                 Gérez efficacement vos clients et prospects avec notre solution intuitive.
             </p>
@@ -117,7 +144,18 @@
     </section>
 </main>
 <%@ include file="footer.jsp" %>
-<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 <script src="js/all.js"></script>
+<!-- Script pour afficher automatiquement les toasts -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        toastElList.forEach(function (toastEl) {
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        });
+    });
+</script>
 </body>
 </html>
