@@ -1,5 +1,9 @@
 package models;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 /**.
  * Classe métier pour l'adresse
  */
@@ -11,18 +15,26 @@ public class Adresse {
     /**.
      * Numéro de rue de l'adresse
      */
+    @NotNull
+    @Pattern(regexp = "^\\d+[a-zA-Z]*$")
     private String numeroDeRue;
     /**.
      * Nom de rue de l'adresse
      */
+    @NotNull
+    @Size(min = 3, max = 50)
     private String nomDeRue;
     /**.
      * Code postal de l'adresse
      */
+    @NotNull
+    @Pattern(regexp = "^[0-9]{5}$")
     private String codePostal;
     /**.
      * Ville de l'adresse
      */
+    @NotNull
+    @Size(min = 3, max = 50)
     private String ville;
 
     /**.

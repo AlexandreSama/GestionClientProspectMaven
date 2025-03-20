@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,7 +8,7 @@
     <meta name="robots" content="index, follow">
     <title>Spark | Accueil</title>
     <link rel="shortcut icon" href="images/favicon(1).ico" type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="css/home.css">
 </head>
@@ -18,6 +18,19 @@
     <section class="hero text-center">
         <div class="container container-hero">
             <h1 class="hero-title">Bienvenue sur Spark</h1>
+            <!-- Affichage du message de succès et du pseudonyme de l'utilisateur connecté -->
+            <c:if test="${not empty sessionScope.user}">
+                <p class="hero-subtitle">
+                    Connexion réussie : ${sessionScope.success}<br>
+                    Bonjour, ${sessionScope.user} !
+                </p>
+                <p>
+                    Vos droits :
+                    <c:forEach var="right" items="${sessionScope.hasRights}">
+                        ${right}
+                    </c:forEach>
+                </p>
+            </c:if>
             <p class="hero-subtitle">
                 Gérez efficacement vos clients et prospects avec notre solution intuitive.
             </p>
@@ -104,7 +117,7 @@
     </section>
 </main>
 <%@ include file="footer.jsp" %>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="js/all.js"></script>
 </body>
 </html>

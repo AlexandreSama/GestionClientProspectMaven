@@ -1,5 +1,10 @@
 package models;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 /**.
  * Classe métier abstract pour une société
  */
@@ -11,10 +16,13 @@ public abstract class Societe {
     /**.
      * Adresse de la société
      */
+    @NotNull
     private Adresse adresse;
     /**.
      * Email de la société
      */
+    @NotNull
+    @Email
     private String adresseMail;
     /**.
      * Commentaire de la société
@@ -23,10 +31,15 @@ public abstract class Societe {
     /**.
      * Téléphone de la société
      */
+    @NotNull
+    @Pattern(regexp = "^[0-9]{10}$")
+    @Size(min = 12, max = 12)
     private String telephone;
     /**.
      * Raison Sociale de la société
      */
+    @NotNull
+    @Size(min = 2, max = 50)
     private String raisonSociale;
 
     /**.
@@ -56,6 +69,7 @@ public abstract class Societe {
      *
      * @return Adresse de la société.
      */
+    @NotNull
     public Adresse getAdresse() {
         return adresse;
     }
@@ -74,6 +88,7 @@ public abstract class Societe {
      *
      * @return Adresse e-mail de la société.
      */
+    @NotNull
     public String getAdresseMail() {
         return adresseMail;
     }
@@ -110,6 +125,7 @@ public abstract class Societe {
      *
      * @return Identifiant de la société.
      */
+    @NotNull
     public Integer getIdentifiant() {
         return identifiant;
     }
@@ -127,6 +143,7 @@ public abstract class Societe {
      *
      * @return Raison sociale de la société.
      */
+    @NotNull
     public String getRaisonSociale() {
         return raisonSociale;
     }
@@ -145,6 +162,7 @@ public abstract class Societe {
      *
      * @return Numéro de téléphone de la société.
      */
+    @NotNull
     public String getTelephone() {
         return telephone;
     }

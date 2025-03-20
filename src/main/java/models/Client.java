@@ -1,5 +1,8 @@
 package models;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +18,14 @@ public class Client extends Societe {
     /**.
      * chiffre d'affaire du client
      */
+    @NotNull
+    @Size(min = 4, max = 20)
     private long chiffreAffaire;
     /**.
      * Nombre d'employés du client
      */
+    @NotNull
+    @Size(min = 3, max = 20)
     private int nbrEmploye;
     /**.
      * Liste de contrats du client

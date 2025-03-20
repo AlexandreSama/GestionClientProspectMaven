@@ -36,3 +36,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/src/main/webapp/node_modules/
+/src/main/java/controllers/user/CreateUserController.java

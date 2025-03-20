@@ -13,12 +13,18 @@ import controllers.prospect.DeleteProspectController;
 import controllers.prospect.ListeProspectController;
 import controllers.prospect.UpdateProspectController;
 import controllers.user.LoginController;
+import controllers.user.UserForm;
+import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -29,7 +35,7 @@ public class FrontController extends HttpServlet {
     /**.
      * Map des commandes menant aux controllers
      */
-    private Map<String, Object> commands = new HashMap<>();
+    private final Map<String, Object> commands = new HashMap<>();
     /**.
      * Le classique LOGGER
      */
@@ -37,11 +43,32 @@ public class FrontController extends HttpServlet {
             Logger.getLogger(FrontController.class.getName());
 
     /**.
+     * La datasource pour la connexion BDD
+     */
+    @Resource(name = "jdbc/ecf")
+    private static DataSource datasource;
+
+    /**.
+     * La variable pour la connexion BDD
+     */
+    private static Connection connection;
+
+    /**.
      * La méthode d'initialisation
      * du controller
      */
     @Override
-    public void init() {
+    public void init() throws ServletException {
+
+        try {
+            connection = datasource.getConnection();
+            LOGGER.info("Récupération réussi de la connexion");
+        } catch (SQLException e) {
+            LOGGER.info("Erreur avec la récupération "
+                    + "de connexion " + e.getMessage());
+            throw new ServletException("Erreur lors de la "
+                    + "récupération de la connexion", e);
+        }
         // Enregistrement des commandes pour les Clients
         commands.put("clients/view", new ListeClientController());
         commands.put("clients/add", new CreateClientController());
@@ -54,6 +81,8 @@ public class FrontController extends HttpServlet {
         commands.put("prospects/delete", new DeleteProspectController());
         // Enregistrement des commandes pour l'utilisateur
         commands.put("user/login", new LoginController());
+//        commands.put("create-user", new CreateUserController(connection));
+        commands.put("valider-login", new UserForm(connection));
         // Enregistrement des commandes a part
         commands.put("contact", new ContactController());
         commands.put("mentions", new MentionsController());
@@ -74,8 +103,9 @@ public class FrontController extends HttpServlet {
         try {
             // Récupération du paramètre "cmd" passé dans l'URL
             String cmd = request.getParameter("cmd");
-            LOGGER.info("Valeur du paramètre cmd : " + cmd);
+
             ICommand com = (ICommand) commands.get(cmd);
+
             urlSuite = com.execute(request, response);
         } catch (Exception e) {
             LOGGER.severe("Erreur dans processRequest : " + e.getMessage());
@@ -112,5 +142,11 @@ public class FrontController extends HttpServlet {
      * Méthode destroy pour le controller
      */
     public void destroy() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            LOGGER.severe("Erreur dans destruction "
+                    + "de la connexion SQL : " + e.getMessage());
+        }
     }
 }
