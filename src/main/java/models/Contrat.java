@@ -34,6 +34,21 @@ public class Contrat {
     }
 
     /**.
+     * Constructeur pour un contrat déjà préparé
+     * @param id L'identifiant du contrat
+     * @param idClient L'identifiant du client lié au contrat
+     * @param nomContrat Le nom du contrat
+     * @param montantContrat Le montant du contrat
+     */
+    public Contrat(final Integer id, final Integer idClient,
+                   final String nomContrat, final Double montantContrat) {
+        setIdContrat(id);
+        setClient(idClient);
+        setNomContrat(nomContrat);
+        setMontantContrat(montantContrat);
+    }
+
+    /**.
      * Retourne le montant du contrat
      * @return le montant du contrat (Double)
      */
@@ -95,5 +110,29 @@ public class Contrat {
      */
     public void setIdContrat(final Integer idContrat) {
         this.idContrat = idContrat;
+    }
+
+    /**.
+     * Retourne les infos de l'objet en string
+     * @return les infos de l'objet en string
+     */
+    @Override
+    public String toString() {
+        return "Contrat{"
+                +
+                "idClient="
+                + idClient
+                +
+                ", idContrat="
+                + idContrat
+                +
+                ", nomContrat='"
+                + nomContrat
+                + '\''
+                +
+                ", montantContrat="
+                + montantContrat
+                +
+                '}';
     }
 }

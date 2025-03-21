@@ -33,6 +33,7 @@ public class Prospect extends Societe {
      * @param telephone         Numéro de téléphone du prospect.
      * @param dateProspection   Date de prospection.
      * @param estInteresse      Statut d'intérêt (OUI/NON).
+     * @param gestionnaire      L'utilisateur gérant ce prospect
      */
     public Prospect(final Integer identifiantProspect, final Adresse adresse,
                     final String adresseMail, final String commentaire,

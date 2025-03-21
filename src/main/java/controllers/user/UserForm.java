@@ -22,14 +22,32 @@ import java.util.logging.Logger;
 
 public class UserForm implements ICommand {
 
+    /**.
+     * La variable pour la connexion BDD
+     */
     private final Connection connection;
+
+    /**.
+     * Le classique LOGGER
+     */
     private static final Logger LOGGER =
             Logger.getLogger(UserForm.class.getName());
 
+    /**.
+     * Le constructeur pour le controller
+     * @param connection La variable de connexion BDD
+     */
     public UserForm(final Connection connection) {
         this.connection = connection;
     }
 
+    /**.
+     * Méthode d'éxécution du controller
+     * @param request - La requête reçu
+     * @param response - La réponse a renvoyer si besoin
+     * @return Le nom de la page demandé
+     * @throws Exception - Une exception au cas ou
+     */
     public String execute(final HttpServletRequest request,
                           final HttpServletResponse response) throws Exception {
 
@@ -72,7 +90,8 @@ public class UserForm implements ICommand {
 
         try {
             // Récupération du hash stocké en base pour ce pseudonyme
-            String sql = "SELECT id, username, pwd FROM user WHERE username = ?";
+            String sql = "SELECT id, username,"
+                    + "pwd FROM user WHERE username = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
@@ -96,7 +115,8 @@ public class UserForm implements ICommand {
                 } else {
                     request.setAttribute("error",
                             "Erreur, veuillez vérifier votre mot de passe");
-                    LOGGER.info("Mot de passe incorrect pour l'utilisateur " + username);
+                    LOGGER.info("Mot de passe incorrect "
+                            + "pour l'utilisateur " + username);
                     return "user/login.jsp";
                 }
             } else {
@@ -106,7 +126,8 @@ public class UserForm implements ICommand {
                 return "user/login.jsp";
             }
         } catch (SQLException e) {
-            request.setAttribute("error", "Erreur SQL: Veuillez réessayer plus tard");
+            request.setAttribute("error",
+                    "Erreur SQL: Veuillez réessayer plus tard");
             LOGGER.info("Erreur SQL: " + e.getMessage());
             return "user/login.jsp";
         }

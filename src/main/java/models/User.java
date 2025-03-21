@@ -125,11 +125,22 @@ public class User {
         societes.add(societe);
     }
 
+    /**.
+     * Retourne les infos de l'objet en String
+     * @return les infos de l'objet en String
+     */
     @Override
     public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", pwd='" + pwd + '\'' +
+        return "User{"
+                +
+                "username='"
+                + username
+                + '\''
+                +
+                ", pwd='"
+                + pwd
+                + '\''
+                +
                 '}';
     }
 }

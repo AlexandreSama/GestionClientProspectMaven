@@ -42,6 +42,9 @@ public abstract class Societe {
     @Size(min = 2, max = 50)
     private String raisonSociale;
 
+    /**.
+     * Gérant de la société
+     */
     @NotNull
     private User gestionnaire;
 
@@ -56,6 +59,7 @@ public abstract class Societe {
      * @param commentaire    Commentaire sur la société.
      * @param raisonSociale  Raison sociale de la société.
      * @param telephone      Numéro de téléphone de la société.
+     * @param gestionnaire   Le gérant de cet société
      */
     public Societe(final Adresse adresse, final String adresseMail,
                    final String commentaire, final String raisonSociale,

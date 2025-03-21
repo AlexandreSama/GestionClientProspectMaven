@@ -43,6 +43,7 @@ public class Client extends Societe {
      * @param telephone         Numéro de téléphone du client.
      * @param chiffreAffaire    Chiffre d'affaires du client.
      * @param nbrEmploye        Nombre d'employés du client.
+     * @param gestionnaire      L'utilisateur gérant le client
      */
     public Client(final Integer identifiantClient, final Adresse adresse,
                   final String adresseMail, final String commentaire,
