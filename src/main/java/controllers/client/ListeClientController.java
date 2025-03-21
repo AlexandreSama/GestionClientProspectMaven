@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import models.Contrat;
+import models.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -53,7 +54,7 @@ public class ListeClientController implements ICommand {
             throws Exception {
         try {
             HttpSession session = request.getSession();
-            String userId = session.getAttribute("user_id").toString();
+            User user = (User) session.getAttribute("user");
             // Utilisation d'un LEFT JOIN sur contrat
             // pour ne pas exclure les clients sans contrat
             String sql = "SELECT c.*, s.*, a.*, co.idContrat,"
@@ -70,7 +71,7 @@ public class ListeClientController implements ICommand {
                     +
                     "WHERE s.gestionnaire = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, userId);
+            ps.setString(1, user.getIdentifiantUser().toString());
             ResultSet rs = ps.executeQuery();
 
             // Utilisation d'une Map pour regrouper
