@@ -71,7 +71,7 @@ public class FrontController extends HttpServlet {
                     + "récupération de la connexion", e);
         }
         // Enregistrement des commandes pour les Clients
-        commands.put("clients/view", new ListeClientController());
+        commands.put("clients/view", new ListeClientController(connection));
         commands.put("clients/add", new CreateClientController());
         commands.put("clients/update", new UpdateClientController());
         commands.put("clients/delete", new DeleteClientController());

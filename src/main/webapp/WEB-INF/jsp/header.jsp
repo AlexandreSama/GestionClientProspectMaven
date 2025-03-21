@@ -23,8 +23,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav">
-                    <a href="?cmd=clients/view" class="nav-item nav-link" id="listeClientBtn">Gérer vos clients</a>
-                    <a href="?cmd=prospects/view" class="nav-item nav-link" id="listeProspectBtn">Gérer vos prospects</a>
+                    <c:if test="${empty sessionScope.user}">
+                        <a href="?cmd=user/login" class="nav-item nav-link" id="listeClientBtn">Gérer vos clients</a>
+                        <a href="?cmd=user/login" class="nav-item nav-link" id="listeProspectBtn">Gérer vos prospects</a>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.user}">
+                        <a href="?cmd=clients/view" class="nav-item nav-link" id="listeClientBtn">Gérer vos clients</a>
+                        <a href="?cmd=prospects/view" class="nav-item nav-link" id="listeProspectBtn">Gérer vos prospects</a>
+                    </c:if>
                 </div>
                 <div class="navbar-nav ms-auto">
                     <!-- Version pour utilisateur non connecté -->

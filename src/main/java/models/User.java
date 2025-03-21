@@ -3,6 +3,9 @@ package models;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**.
  * Classe métier pour un user
  */
@@ -26,6 +29,12 @@ public class User {
     @NotNull
     @Size(min = 10, max = 255)
     private String pwd;
+
+    /**.
+     * Liste de sociétés que
+     * l'utilisateur gère
+     */
+    private final List<Societe> societes = new ArrayList<>();
 
     /**.
      * Constructeur de la classe User si l'utilisateur est déjà créer
@@ -96,6 +105,24 @@ public class User {
      */
     public void setPwd(final String pwd) {
         this.pwd = pwd;
+    }
+
+    /**.
+     * Retourne la liste des sociétés
+     * que l'utilisateur gère
+     * @return la liste des sociétés
+     * que l'utilisateur gère
+     */
+    public List<Societe> getSocietes() {
+        return societes;
+    }
+
+    /**.
+     * Ajoute une société a la liste
+     * @param societe la société a ajouté
+     */
+    public void addSociete(final Societe societe) {
+        societes.add(societe);
     }
 
     @Override

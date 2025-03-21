@@ -42,6 +42,9 @@ public abstract class Societe {
     @Size(min = 2, max = 50)
     private String raisonSociale;
 
+    @NotNull
+    private User gestionnaire;
+
     /**.
      * Constructeur pour initialiser une
      * société avec les informations de base.
@@ -56,12 +59,13 @@ public abstract class Societe {
      */
     public Societe(final Adresse adresse, final String adresseMail,
                    final String commentaire, final String raisonSociale,
-                   final String telephone) {
+                   final String telephone, final User gestionnaire) {
         setAdresse(adresse);
         setAdresseMail(adresseMail);
         setCommentaire(commentaire);
         setTelephone(telephone);
         setRaisonSociale(raisonSociale);
+        setGestionnaire(gestionnaire);
     }
 
     /**.
@@ -174,5 +178,21 @@ public abstract class Societe {
      */
     public void setTelephone(final String telephone) {
         this.telephone = telephone.trim();
+    }
+
+    /**.
+     * Retourne l'utilisateur gérant cet société
+     * @return l'utilisateur gérant cet société
+     */
+    public User getGestionnaire() {
+        return gestionnaire;
+    }
+
+    /**.
+     * Ajoute l'utilisateur gérant cet société
+     * @param gestionnaire l'utilisateur gérant cet société
+     */
+    public void setGestionnaire(final User gestionnaire) {
+        this.gestionnaire = gestionnaire;
     }
 }

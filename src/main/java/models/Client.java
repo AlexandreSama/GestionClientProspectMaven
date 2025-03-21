@@ -47,8 +47,10 @@ public class Client extends Societe {
     public Client(final Integer identifiantClient, final Adresse adresse,
                   final String adresseMail, final String commentaire,
                   final String raisonSociale, final String telephone,
-                  final long chiffreAffaire, final int nbrEmploye) {
-        super(adresse, adresseMail, commentaire, raisonSociale, telephone);
+                  final long chiffreAffaire, final int nbrEmploye,
+                  final User gestionnaire) {
+        super(adresse, adresseMail, commentaire,
+                raisonSociale, telephone, gestionnaire);
         setIdentifiantClient(identifiantClient);
         setChiffreAffaire(chiffreAffaire);
         setNbrEmploye(nbrEmploye);

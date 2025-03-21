@@ -39,100 +39,67 @@
             </tr>
             </thead>
             <tbody>
-            <!-- Exemple de ligne Client -->
-            <tr>
-                <th scope="row">1</th>
-                <td>
-                    <!-- Lien qui ouvre la modale (même classe pour client ou prospect) -->
-                    <a href="#"
-                       class="text-decoration-none entity-link"
-                       data-bs-toggle="modal"
-                       data-bs-target="#clientModal"
+                <c:forEach var="client" items="${clients}" varStatus="status">
+                    <tr>
+                        <!-- Numéro de ligne -->
+                        <th scope="row">${status.index + 1}</th>
 
-                       data-raison="Shifty Corps"
-                       data-email="client1@gmail.com"
-                       data-phone="06 12 34 86 78"
-                       data-chiffreAffaire="50000"
-                       data-nbrEmploye="50"
-                       data-localisation="73 Rue Chanzy, 51800 Sainte-Menehould"
-                       data-meteo=""
-                    >
-                        Shifty Corps
-                    </a>
-                </td>
-                <td>client1@gmail.com</td>
-                <td>06 45 34 56 78</td>
-                <td>73</td>
-                <td>Rue Chanzy</td>
-                <td>51800</td>
-                <td>Sainte-Menehould</td>
-                <td>50000</td>
-                <td>50</td>
-                <td>
-                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#contractsModal">Voir les contrats</button>
-                </td>
-                <td>
-                    <a
-                            href="?cmd=clients/update"
-                            class="btn btn-sm btn-primary"
-                    >
-                        Modifier
-                    </a>
-                    <a
-                            href="?cmd=clients/delete"
-                            class="btn btn-sm btn-danger ms-2"
-                    >
-                        Supprimer
-                    </a>
-                </td>
-            </tr>
+                        <!-- Raison Sociale avec lien vers une modale -->
+                        <td>
+                            <a href="#"
+                               class="text-decoration-none entity-link"
+                               data-bs-toggle="modal"
+                               data-bs-target="#clientModal"
+                               data-raison="${client.raisonSociale}"
+                               data-email="${client.adresseMail}"
+                               data-phone="${client.telephone}"
+                               data-chiffreAffaire="${client.chiffreAffaire}"
+                               data-nbrEmploye="${client.nbrEmploye}"
+                               data-localisation="${client.numeroDeRue} ${client.nomDeRue}, ${client.codePostal} ${client.ville}"
+                               data-meteo=""
+                            >
+                                    ${client.raisonSociale}
+                            </a>
+                        </td>
 
-            <!-- Exemple de ligne Client -->
-            <tr>
-                <th scope="row">2</th>
-                <td>
-                    <a href="#"
-                       class="text-decoration-none entity-link"
-                       data-bs-toggle="modal"
-                       data-bs-target="#clientModal"
+                        <!-- Email -->
+                        <td>${client.adresseMail}</td>
 
-                       data-raison="Hammer Inc."
-                       data-email="client2@gmail.com"
-                       data-phone="06 45 34 74 78"
-                       data-chiffreAffaire="250000"
-                       data-nbrEmploye="1500"
-                       data-localisation="21 Av. du 3ème Rac, 89300 Joigny"
-                       data-meteo=""
-                    >
-                        Hammer Inc.
-                    </a>
-                </td>
-                <td>client2@gmail.com</td>
-                <td>06 45 34 74 78</td>
-                <td>21</td>
-                <td>Av. du 3ème Rac</td>
-                <td>89300</td>
-                <td>Joigny</td>
-                <td>250000</td>
-                <td>1500</td>
-                <td>
-                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#contractsModal">Voir les contrats</button>
-                </td>
-                <td>
-                    <a
-                            href="?cmd=clients/update"
-                            class="btn btn-sm btn-primary"
-                    >
-                        Modifier
-                    </a>
-                    <a
-                            href="?cmd=clients/delete"
-                            class="btn btn-sm btn-danger ms-2"
-                    >
-                        Supprimer
-                    </a>
-                </td>
-            </tr>
+                        <!-- Téléphone -->
+                        <td>${client.telephone}</td>
+
+                        <!-- Numéro de rue -->
+                        <td>${client.numeroDeRue}</td>
+
+                        <!-- Nom de rue -->
+                        <td>${client.nomDeRue}</td>
+
+                        <!-- Code Postal -->
+                        <td>${client.codePostal}</td>
+
+                        <!-- Ville -->
+                        <td>${client.ville}</td>
+
+                        <!-- Chiffre d'Affaire -->
+                        <td>${client.chiffreAffaire}</td>
+
+                        <!-- Nombre d'employé -->
+                        <td>${client.nbrEmploye}</td>
+
+                        <!-- Bouton Voir les contrats -->
+                        <td>
+                            <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#contractsModal">
+                                Voir les contrats
+                            </button>
+                        </td>
+
+                        <!-- Actions (Modifier / Supprimer) -->
+                        <td>
+                            <a href="?cmd=clients/update&id=${client.idClient}" class="btn btn-sm btn-primary">Modifier</a>
+                            <a href="?cmd=clients/delete&id=${client.idClient}" class="btn btn-sm btn-danger ms-2">Supprimer</a>
+                        </td>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
     </div>
@@ -163,25 +130,24 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Contrat A</td>
-                                <td>1 000 €</td>
-                                <td>
-                                    <a href="../contract/formContract.html?action=edit&id=1&libelle=Contrat%20A&montant=1000" class="btn btn-sm btn-primary">Modifier</a>
-                                    <button class="btn btn-sm btn-danger ms-2">Supprimer</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Contrat B</td>
-                                <td>2 500 €</td>
-                                <td>
-                                    <a href="../contract/formContract.html?action=edit&id=2&libelle=Contrat%20B&montant=2500" class="btn btn-sm btn-primary">Modifier</a>
-                                    <button class="btn btn-sm btn-danger ms-2">Supprimer</button>
-                                </td>
-                            </tr>
-                            <!-- Ajoutez d'autres lignes selon vos besoins -->
+                            <c:if test="${not empty client.contracts}">
+                                <c:forEach var="contract" items="${client.contracts}">
+                                    <tr>
+                                        <td>${contract.idContrat}</td>
+                                        <td>${contract.libelle}</td>
+                                        <td>${contract.montant}</td>
+                                        <td>
+                                            <a href="?cmd=contract/update&id=${contract.idContrat}&libelle=${contract.libelle}&montant=${contract.montant}" class="btn btn-sm btn-primary">Modifier</a>
+                                            <a href="?cmd=contract/delete&id=${contract.idContrat}" class="btn btn-sm btn-danger ms-2">Supprimer</a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${empty client.contracts}">
+                                <tr>
+                                    <td colspan="4" class="text-center">Aucun contrat disponible.</td>
+                                </tr>
+                            </c:if>
                             </tbody>
                         </table>
                     </div>
