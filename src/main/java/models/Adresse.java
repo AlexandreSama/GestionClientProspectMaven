@@ -45,8 +45,9 @@ public class Adresse {
      * @param numeroDeRue  Numéro de la rue.
      * @param ville        Ville de l'adresse.
      */
-    public Adresse(final String codePostal, final String nomDeRue,
+    public Adresse(final Integer identifiantAdresse, final String codePostal, final String nomDeRue,
                    final String numeroDeRue, final String ville) {
+        setIdentifiant(identifiantAdresse);
         setCodePostal(codePostal);
         setNomDeRue(nomDeRue);
         setNumeroDeRue(numeroDeRue);
@@ -152,7 +153,9 @@ public class Adresse {
     public String toString() {
         return "Adresse{"
                 +
-                "numeroDeRue='" + numeroDeRue + '\''
+                "idAdresse=" + getIdentifiant() + '\''
+                +
+                ", numeroDeRue='" + numeroDeRue + '\''
                 +
                 ", nomDeRue='" + nomDeRue + '\''
                 +

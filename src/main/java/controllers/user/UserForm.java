@@ -104,13 +104,7 @@ public class UserForm implements ICommand {
                 Argon2 argon2 = Argon2Factory.create();
                 if (argon2.verify(storedHash, password.toCharArray())) {
                     HttpSession session = request.getSession();
-//                    session.setAttribute("user", username);
-//                    session.setAttribute("user_id", userId);
-                    session.setAttribute("user", new User(
-                            userId,
-                            password,
-                            username
-                    ));
+                    session.setAttribute("user", Arrays.asList(userId, username));
                     session.setAttribute("hasRights",
                             Arrays.asList("Supprimer", "Modifier", "Créer"));
                     session.setAttribute("success",

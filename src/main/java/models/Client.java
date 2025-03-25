@@ -1,7 +1,10 @@
 package models;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.Range;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +22,13 @@ public class Client extends Societe {
      * chiffre d'affaire du client
      */
     @NotNull
-    @Size(min = 4, max = 20)
+    @Max(2000000)
     private long chiffreAffaire;
     /**.
      * Nombre d'employés du client
      */
     @NotNull
-    @Size(min = 3, max = 20)
+    @Max(2000000)
     private int nbrEmploye;
     /**.
      * Liste de contrats du client
@@ -49,7 +52,7 @@ public class Client extends Societe {
                   final String adresseMail, final String commentaire,
                   final String raisonSociale, final String telephone,
                   final long chiffreAffaire, final int nbrEmploye,
-                  final User gestionnaire) {
+                  final Integer gestionnaire) {
         super(adresse, adresseMail, commentaire,
                 raisonSociale, telephone, gestionnaire);
         setIdentifiantClient(identifiantClient);
@@ -120,8 +123,8 @@ public class Client extends Societe {
     public String toString() {
         return "Client{"
                 +
-                "id="
-                + getIdentifiant()
+                "idClient="
+                + getIdentifiantClient()
                 +
                 ", raisonSociale='"
                 + getRaisonSociale()
@@ -143,6 +146,9 @@ public class Client extends Societe {
                 +
                 ", adresse="
                 + (getAdresse() != null ? getAdresse().toString() : "null")
+                +
+                ", SocieteID="
+                + (getIdentifiant())
                 +
                 '}';
     }

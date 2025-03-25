@@ -33,7 +33,7 @@ public abstract class Societe {
      */
     @NotNull
     @Pattern(regexp = "^[0-9]{10}$")
-    @Size(min = 12, max = 12)
+    @Size(min = 10, max = 10)
     private String telephone;
     /**.
      * Raison Sociale de la société
@@ -46,7 +46,7 @@ public abstract class Societe {
      * Gérant de la société
      */
     @NotNull
-    private User gestionnaire;
+    private Integer gestionnaire;
 
     /**.
      * Constructeur pour initialiser une
@@ -63,7 +63,7 @@ public abstract class Societe {
      */
     public Societe(final Adresse adresse, final String adresseMail,
                    final String commentaire, final String raisonSociale,
-                   final String telephone, final User gestionnaire) {
+                   final String telephone, final Integer gestionnaire) {
         setAdresse(adresse);
         setAdresseMail(adresseMail);
         setCommentaire(commentaire);
@@ -188,7 +188,7 @@ public abstract class Societe {
      * Retourne l'utilisateur gérant cet société
      * @return l'utilisateur gérant cet société
      */
-    public User getGestionnaire() {
+    public Integer getGestionnaire() {
         return gestionnaire;
     }
 
@@ -196,7 +196,19 @@ public abstract class Societe {
      * Ajoute l'utilisateur gérant cet société
      * @param gestionnaire l'utilisateur gérant cet société
      */
-    public void setGestionnaire(final User gestionnaire) {
+    public void setGestionnaire(final Integer gestionnaire) {
         this.gestionnaire = gestionnaire;
+    }
+
+    @Override
+    public String toString() {
+        return "Societe{" +
+                ", identifiantSociete=" + identifiant +
+                ", adresseMail='" + adresseMail + '\'' +
+                ", commentaire='" + commentaire + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", raisonSociale='" + raisonSociale + '\'' +
+                ", gestionnaire=" + gestionnaire +
+                '}';
     }
 }

@@ -54,8 +54,10 @@ public class ListeClientController implements ICommand {
             throws Exception {
         try {
             HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
-            // Utilisation d'un LEFT JOIN sur contrat
+            // Récupérer l'utilisateur stocké en session (ici sous forme de List)
+            List<?> userList = (List<?>) session.getAttribute("user");
+            // On suppose que l'ID de l'utilisateur est stocké à l'indice 0
+            Integer userId = (Integer) userList.getFirst();            // Utilisation d'un LEFT JOIN sur contrat
             // pour ne pas exclure les clients sans contrat
             String sql = "SELECT c.*, s.*, a.*, co.idContrat,"
                     +
@@ -71,7 +73,7 @@ public class ListeClientController implements ICommand {
                     +
                     "WHERE s.gestionnaire = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, user.getIdentifiantUser().toString());
+            ps.setString(1, String.valueOf(userId));
             ResultSet rs = ps.executeQuery();
 
             // Utilisation d'une Map pour regrouper
