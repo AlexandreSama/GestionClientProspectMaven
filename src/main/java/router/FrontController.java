@@ -104,29 +104,31 @@ public class FrontController extends HttpServlet {
      */
     protected void processRequest(final HttpServletRequest request,
                                   final HttpServletResponse response) {
-        String urlSuite = "";
+        String navigation = "";
         try {
             // Récupération du paramètre "cmd" passé dans l'URL
             String cmd = request.getParameter("cmd");
-
             ICommand com = (ICommand) commands.get(cmd);
-
-            urlSuite = com.execute(request, response);
+            navigation = com.execute(request, response); // On attend une String
         } catch (Exception e) {
-            LOGGER.severe("Erreur dans processRequest : "
-                    + e.getMessage()
-                    + " dans : "
-                    + e.getClass().getName());
-            urlSuite = "erreur.jsp";
+            LOGGER.severe("Erreur dans processRequest : " + e.getMessage()
+                    + " dans : " + e.getClass().getName());
+            navigation = "erreur.jsp";
         } finally {
             try {
-                request.getRequestDispatcher("WEB-INF/jsp/"
-                        + urlSuite).forward(request, response);
+                if (navigation != null && navigation.startsWith("redirect:")) {
+                    // Extraire l'URL cible après le préfixe "redirect:"
+                    String redirectUrl = navigation.substring("redirect:".length());
+                    response.sendRedirect(request.getContextPath() + redirectUrl);
+                } else {
+                    request.getRequestDispatcher("WEB-INF/jsp/" + navigation).forward(request, response);
+                }
             } catch (ServletException | IOException e) {
-                LOGGER.severe("Erreur lors du forward : " + e.getMessage());
+                LOGGER.severe("Erreur lors du forward ou de la redirection : " + e.getMessage());
             }
         }
     }
+
 
     /**.
      * Méthode en cas de requête de type GET

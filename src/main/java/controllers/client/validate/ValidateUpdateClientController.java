@@ -10,7 +10,6 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import models.Adresse;
 import models.Client;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -27,6 +26,7 @@ public class ValidateUpdateClientController implements ICommand {
         this.connection = connection;
     }
 
+    @Override
     public String execute(final HttpServletRequest request,
                           final HttpServletResponse response) throws Exception {
 
@@ -43,7 +43,7 @@ public class ValidateUpdateClientController implements ICommand {
         // Récupérer l'utilisateur stocké en session (ici sous forme de List)
         List<?> userList = (List<?>) session.getAttribute("user");
         // On suppose que l'ID de l'utilisateur est stocké à l'indice 0
-        Integer userId = (Integer) userList.getFirst();
+        Integer userId = (Integer) userList.getFirst(); // Remplace getFirst() par get(0)
 
         LOGGER.info("chiffreAffaire : " + request.getParameter("chiffreAffaire"));
         LOGGER.info("nbEmploye : " + request.getParameter("nbEmploye"));
@@ -130,7 +130,7 @@ public class ValidateUpdateClientController implements ICommand {
 
         // Supprimer le token CSRF de la session après validation
         session.removeAttribute("csrfToken");
-
-        return "client/listeClient.jsp";
+        // Retourne une chaîne de redirection : le Front Controller va interpréter ce préfixe
+        return "redirect:/front?cmd=clients/view";
     }
 }
