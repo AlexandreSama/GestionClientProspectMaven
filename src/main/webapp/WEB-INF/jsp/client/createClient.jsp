@@ -18,7 +18,13 @@
         Ajouter un client
     </h1>
 
-    <form>
+    <% if (request.getAttribute("error") != null) { %>
+    <div class="alert alert-danger">
+        <%= request.getAttribute("error") %>
+    </div>
+    <% } %>
+
+    <form action="?cmd=clients/add/validate" method="POST">
         <div class="mb-3">
             <label for="clientId" class="form-label">Identifiant</label>
             <input
@@ -26,6 +32,7 @@
                     class="form-control"
                     id="clientId"
                     name="clientId"
+                    value="${client.identifiantClient}"
                     readonly
             />
         </div>
@@ -38,6 +45,7 @@
                     id="raisonSociale"
                     name="raisonSociale"
                     placeholder="Entrez la raison sociale"
+                    value="${client.raisonSociale}"
                     required
             />
         </div>
@@ -50,6 +58,7 @@
                     id="email"
                     name="email"
                     placeholder="exemple@domaine.com"
+                    value="${client.adresseMail}"
                     required
             />
         </div>
@@ -62,6 +71,7 @@
                     id="phone"
                     name="phone"
                     placeholder="06 12 34 56 78"
+                    value="${client.telephone}"
                     required
             />
         </div>
@@ -74,6 +84,7 @@
                     id="numeroRue"
                     name="numeroRue"
                     placeholder="Ex : 14"
+                    value="${client.adresse.numeroDeRue}"
                     required
             />
         </div>
@@ -86,6 +97,7 @@
                     id="nomRue"
                     name="nomRue"
                     placeholder="Ex : Rue des Fleurs"
+                    value="${client.adresse.nomDeRue}"
                     required
             />
         </div>
@@ -98,6 +110,7 @@
                     id="codePostal"
                     name="codePostal"
                     placeholder="Ex : 75000"
+                    value="${client.adresse.codePostal}"
                     required
             />
         </div>
@@ -110,6 +123,7 @@
                     id="ville"
                     name="ville"
                     placeholder="Ex : Paris"
+                    value="${client.adresse.ville}"
                     required
             />
         </div>
@@ -122,6 +136,7 @@
                     id="chiffreAffaire"
                     name="chiffreAffaire"
                     placeholder="Ex : 100000"
+                    value="${client.chiffreAffaire}"
                     required
             />
         </div>
@@ -134,9 +149,12 @@
                     id="nbEmploye"
                     name="nbEmploye"
                     placeholder="Ex : 50"
+                    value="${client.nbrEmploye}"
                     required
             />
         </div>
+
+        <input type="hidden" name="csrfToken" value="${token}">
 
         <button
                 type="submit"

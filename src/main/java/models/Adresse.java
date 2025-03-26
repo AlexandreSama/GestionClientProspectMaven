@@ -11,7 +11,7 @@ public class Adresse {
     /**.
      * Identifiant de l'adresse
      */
-    private Integer identifiant;
+    private Integer identifiantAdresse = null;
     /**.
      * Numéro de rue de l'adresse
      */
@@ -48,6 +48,14 @@ public class Adresse {
     public Adresse(final Integer identifiantAdresse, final String codePostal, final String nomDeRue,
                    final String numeroDeRue, final String ville) {
         setIdentifiant(identifiantAdresse);
+        setCodePostal(codePostal);
+        setNomDeRue(nomDeRue);
+        setNumeroDeRue(numeroDeRue);
+        setVille(ville);
+    }
+
+    public Adresse(final String codePostal, final String nomDeRue,
+                   final String numeroDeRue, final String ville) {
         setCodePostal(codePostal);
         setNomDeRue(nomDeRue);
         setNumeroDeRue(numeroDeRue);
@@ -132,7 +140,7 @@ public class Adresse {
      * @return Identifiant.
      */
     public Integer getIdentifiant() {
-        return identifiant;
+        return identifiantAdresse;
     }
 
     /**.
@@ -140,7 +148,7 @@ public class Adresse {
      * @param identifiant l'identifiant récupéré depuis la BDD
      */
     public void setIdentifiant(final Integer identifiant) {
-        this.identifiant = identifiant;
+        this.identifiantAdresse = identifiant;
     }
 
 

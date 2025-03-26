@@ -36,7 +36,8 @@ public class Client extends Societe {
     private final List<Contrat> contrats = new ArrayList<>();
 
     /**.
-     * Constructeur pour créer un client avec les informations spécifiées.
+     * Constructeur pour modifier / supprimer un
+     * client avec les informations spécifiées.
      *
      * @param identifiantClient Identifiant spécifique au client.
      * @param adresse           Adresse du client.
@@ -56,6 +57,28 @@ public class Client extends Societe {
         super(adresse, adresseMail, commentaire,
                 raisonSociale, telephone, gestionnaire);
         setIdentifiantClient(identifiantClient);
+        setChiffreAffaire(chiffreAffaire);
+        setNbrEmploye(nbrEmploye);
+    }
+
+    /**
+     * Constructeur pour créer un client
+     * @param adresse
+     * @param adresseMail
+     * @param commentaire
+     * @param raisonSociale
+     * @param telephone
+     * @param chiffreAffaire
+     * @param nbrEmploye
+     * @param gestionnaire
+     */
+    public Client(final Adresse adresse,
+                  final String adresseMail, final String commentaire,
+                  final String raisonSociale, final String telephone,
+                  final long chiffreAffaire, final int nbrEmploye,
+                  final Integer gestionnaire) {
+        super(adresse, adresseMail, commentaire,
+                raisonSociale, telephone, gestionnaire);
         setChiffreAffaire(chiffreAffaire);
         setNbrEmploye(nbrEmploye);
     }

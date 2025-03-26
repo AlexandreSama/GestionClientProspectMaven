@@ -4,10 +4,11 @@ import controllers.ContactController;
 import controllers.MentionsController;
 import controllers.PageAccueilController;
 import controllers.ICommand;
-import controllers.client.CreateClientController;
+import controllers.client.AddClientController;
 import controllers.client.DeleteClientController;
 import controllers.client.ListeClientController;
 import controllers.client.UpdateClientController;
+import controllers.client.validate.ValidateAddClientController;
 import controllers.client.validate.ValidateUpdateClientController;
 import controllers.prospect.CreateProspectController;
 import controllers.prospect.DeleteProspectController;
@@ -73,11 +74,12 @@ public class FrontController extends HttpServlet {
         }
         // Enregistrement des commandes pour les Clients
         commands.put("clients/view", new ListeClientController(connection));
-        commands.put("clients/add", new CreateClientController());
+        commands.put("clients/add", new AddClientController(connection));
         commands.put("clients/update", new UpdateClientController(connection));
         commands.put("clients/delete", new DeleteClientController());
         // Enregistrements des commandes de validation Client
         commands.put("clients/update/validate", new ValidateUpdateClientController(connection));
+        commands.put("clients/add/validate", new ValidateAddClientController(connection));
         // Enregistrement des commandes pour les Prospects
         commands.put("prospects/view", new ListeProspectController());
         commands.put("prospects/add", new CreateProspectController());

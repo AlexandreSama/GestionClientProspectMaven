@@ -12,7 +12,7 @@ public abstract class Societe {
     /**.
      * Identifiant de la société
      */
-    private Integer identifiant = null;
+    private Integer identifiantSociete = null;
     /**.
      * Adresse de la société
      */
@@ -77,7 +77,6 @@ public abstract class Societe {
      *
      * @return Adresse de la société.
      */
-    @NotNull
     public Adresse getAdresse() {
         return adresse;
     }
@@ -96,7 +95,6 @@ public abstract class Societe {
      *
      * @return Adresse e-mail de la société.
      */
-    @NotNull
     public String getAdresseMail() {
         return adresseMail;
     }
@@ -133,9 +131,8 @@ public abstract class Societe {
      *
      * @return Identifiant de la société.
      */
-    @NotNull
     public Integer getIdentifiant() {
-        return identifiant;
+        return identifiantSociete;
     }
 
     /**.
@@ -143,7 +140,7 @@ public abstract class Societe {
      * @param identifiant l'identifiant a donner pour cet société
      */
     public void setIdentifiant(final Integer identifiant) {
-        this.identifiant = identifiant;
+        this.identifiantSociete = identifiant;
     }
 
     /**.
@@ -151,7 +148,6 @@ public abstract class Societe {
      *
      * @return Raison sociale de la société.
      */
-    @NotNull
     public String getRaisonSociale() {
         return raisonSociale;
     }
@@ -170,7 +166,6 @@ public abstract class Societe {
      *
      * @return Numéro de téléphone de la société.
      */
-    @NotNull
     public String getTelephone() {
         return telephone;
     }
@@ -203,7 +198,7 @@ public abstract class Societe {
     @Override
     public String toString() {
         return "Societe{" +
-                ", identifiantSociete=" + identifiant +
+                ", identifiantSociete=" + identifiantSociete +
                 ", adresseMail='" + adresseMail + '\'' +
                 ", commentaire='" + commentaire + '\'' +
                 ", telephone='" + telephone + '\'' +

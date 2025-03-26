@@ -14,7 +14,7 @@ public class User {
     /**.
      * Identifiant de l'utilisateur
      */
-    private Integer identifiantUser;
+    private Integer identifiantUser = null;
 
     /**.
      * Pseudo de l'utilisateur

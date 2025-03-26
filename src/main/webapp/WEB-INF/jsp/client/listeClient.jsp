@@ -19,6 +19,12 @@
         Liste des clients
     </h1>
 
+    <% if (request.getAttribute("error") != null) { %>
+    <div class="alert alert-danger">
+        <%= request.getAttribute("error") %>
+    </div>
+    <% } %>
+
     <div class="table-responsive">
         <table class="table table-hover align-middle">
             <thead>
