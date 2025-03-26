@@ -18,7 +18,7 @@
         Supprimer le client
     </h1>
 
-    <form>
+    <form action="?cmd=clients/delete/validate" method="POST">
         <div class="mb-3">
             <label for="clientId" class="form-label">Identifiant</label>
             <input
@@ -26,6 +26,7 @@
                     class="form-control"
                     id="clientId"
                     name="clientId"
+                    value="${client.identifiantClient}"
                     readonly
             />
         </div>
@@ -38,6 +39,7 @@
                     id="raisonSociale"
                     name="raisonSociale"
                     placeholder="Entrez la raison sociale"
+                    value="${client.raisonSociale}"
                     readonly
             />
         </div>
@@ -50,6 +52,7 @@
                     id="email"
                     name="email"
                     placeholder="exemple@domaine.com"
+                    value="${client.adresseMail}"
                     readonly
             />
         </div>
@@ -62,6 +65,7 @@
                     id="phone"
                     name="phone"
                     placeholder="06 12 34 56 78"
+                    value="${client.telephone}"
                     readonly
             />
         </div>
@@ -74,6 +78,7 @@
                     id="numeroRue"
                     name="numeroRue"
                     placeholder="Ex : 14"
+                    value="${client.adresse.numeroDeRue}"
                     readonly
             />
         </div>
@@ -86,6 +91,7 @@
                     id="nomRue"
                     name="nomRue"
                     placeholder="Ex : Rue des Fleurs"
+                    value="${client.adresse.nomDeRue}"
                     readonly
             />
         </div>
@@ -98,6 +104,7 @@
                     id="codePostal"
                     name="codePostal"
                     placeholder="Ex : 75000"
+                    value="${client.adresse.codePostal}"
                     readonly
             />
         </div>
@@ -110,6 +117,7 @@
                     id="ville"
                     name="ville"
                     placeholder="Ex : Paris"
+                    value="${client.adresse.ville}"
                     readonly
             />
         </div>
@@ -122,6 +130,7 @@
                     id="chiffreAffaire"
                     name="chiffreAffaire"
                     placeholder="Ex : 100000"
+                    value="${client.chiffreAffaire}"
                     readonly
             />
         </div>
@@ -134,9 +143,12 @@
                     id="nbEmploye"
                     name="nbEmploye"
                     placeholder="Ex : 50"
+                    value="${client.nbrEmploye}"
                     readonly
             />
         </div>
+
+        <input type="hidden" name="csrfToken" value="${token}">
 
         <button
                 type="submit"

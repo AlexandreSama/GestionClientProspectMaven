@@ -6,9 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.security.SecureRandom;
-import java.sql.Connection;
 import java.util.Base64;
-import java.util.logging.Logger;
 
 /**.
  * Controller servant pour la page Création Client
@@ -16,12 +14,7 @@ import java.util.logging.Logger;
  */
 public class AddClientController implements ICommand {
 
-    private final Connection connection;
-    private static final Logger LOGGER = Logger.getLogger(AddClientController.class.getName());
-
-    public AddClientController(final Connection connection) {
-        this.connection = connection;
-    }
+    public AddClientController() {}
 
     /**.
      * Méthode d'éxécution du controller

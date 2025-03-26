@@ -41,8 +41,6 @@ public class ValidateAddClientController implements ICommand {
         List<?> userList = (List<?>) session.getAttribute("user");
         Integer userId = (Integer) userList.getFirst();
 
-        LOGGER.info(userId.toString());
-
         Client addedClient = new Client(
                 new Adresse(
                         request.getParameter("codePostal"),
@@ -58,8 +56,6 @@ public class ValidateAddClientController implements ICommand {
                 Integer.parseInt(request.getParameter("nbEmploye")),
                 userId
         );
-
-        LOGGER.info(addedClient.toString());
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
