@@ -155,8 +155,6 @@
         </div>
 
         <input type="hidden" name="csrfToken" value="${token}">
-        <input type="hidden" name="idSociete" value="${societeId}">
-        <input type="hidden" name="idAdresse" value="${adresseId}">
 
         <button
                 type="submit"

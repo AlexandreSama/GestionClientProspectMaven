@@ -12,6 +12,7 @@ import models.Adresse;
 import models.Client;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
@@ -27,9 +28,7 @@ public class ValidateUpdateClientController implements ICommand {
     }
 
     @Override
-    public String execute(final HttpServletRequest request,
-                          final HttpServletResponse response) throws Exception {
-
+    public String execute(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         String tokenFromSession = (String) session.getAttribute("csrfToken");
         String tokenFromForm = request.getParameter("csrfToken");
@@ -40,43 +39,67 @@ public class ValidateUpdateClientController implements ICommand {
             return "erreur.jsp";
         }
 
-        // Récupérer l'utilisateur stocké en session (ici sous forme de List)
+        // Récupération de l'utilisateur connecté depuis la session
         List<?> userList = (List<?>) session.getAttribute("user");
-        // On suppose que l'ID de l'utilisateur est stocké à l'indice 0
-        Integer userId = (Integer) userList.getFirst(); // Remplace getFirst() par get(0)
+        Integer userId = (Integer) userList.getFirst();
 
-        LOGGER.info("chiffreAffaire : " + request.getParameter("chiffreAffaire"));
-        LOGGER.info("nbEmploye : " + request.getParameter("nbEmploye"));
-        LOGGER.info("clientId : " + request.getParameter("clientId"));
-        LOGGER.info("idAdresse : " + request.getParameter("idAdresse"));
+        // Récupérer les identifiants sensibles stockés en session
+        Integer sessionSocieteId = (Integer) session.getAttribute("societeId");
+        Integer sessionAdresseId = (Integer) session.getAttribute("adresseId");
 
-        // Construction de l'objet Client mis à jour
+        if (sessionSocieteId == null || sessionAdresseId == null) {
+            request.setAttribute("error", "Erreur de session, veuillez réessayer.");
+            return "erreur.jsp";
+        }
+
+        // Construction de l'objet Client en se basant sur les identifiants sécurisés
         Client updatedClient = new Client(
                 Integer.parseInt(request.getParameter("clientId")),
                 new Adresse(
-                        Integer.parseInt(request.getParameter("idAdresse")),
+                        sessionAdresseId,
                         request.getParameter("codePostal"),
                         request.getParameter("nomRue"),
                         request.getParameter("numeroRue"),
                         request.getParameter("ville")
                 ),
                 request.getParameter("email"),
-                "", // commentaire (vide ou à récupérer selon votre logique)
+                "",
                 request.getParameter("raisonSociale"),
                 request.getParameter("phone"),
                 Long.parseLong(request.getParameter("chiffreAffaire")),
                 Integer.parseInt(request.getParameter("nbEmploye")),
-                userId  // Utilisation de l'ID utilisateur récupéré
+                userId
         );
+        updatedClient.setIdentifiant(sessionSocieteId);
 
-        updatedClient.setIdentifiant(Integer.valueOf(request.getParameter("idSociete")));
+        // Vérifier que l'utilisateur connecté
+        // est bien le gestionnaire du client
+        String sqlCheck = "SELECT s.gestionnaire FROM client c JOIN societe s ON c.idSociete = s.idSociete WHERE c.idClient = ?";
+        try (PreparedStatement psCheck = connection.prepareStatement(sqlCheck)) {
+            psCheck.setInt(1, updatedClient.getIdentifiantClient());
+            try (ResultSet rsCheck = psCheck.executeQuery()) {
+                if (rsCheck.next()) {
+                    int gestionnaire = rsCheck.getInt("gestionnaire");
+                    if (gestionnaire != userId) {
+                        request.setAttribute("error", "Vous n'êtes pas autorisé à modifier ce client.");
+                        return "erreur.jsp";
+                    }
+                } else {
+                    request.setAttribute("error", "Client non trouvé.");
+                    return "erreur.jsp";
+                }
+            }
+        } catch (SQLException e) {
+            request.setAttribute("error", "Erreur lors de la vérification de "
+                    +
+                    "l'autorisation. Veuillez réessayer plus tard.");
+            return "erreur.jsp";
+        }
 
         // Validation de l'objet updatedClient via Bean Validation
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<Client>> violations = validator.validate(updatedClient);
-
-        LOGGER.info("client : " + updatedClient);
 
         if (!violations.isEmpty()) {
             StringBuilder errorMessage = new StringBuilder();
@@ -87,50 +110,55 @@ public class ValidateUpdateClientController implements ICommand {
                         .append(violation.getMessage())
                         .append("<br>");
             }
+            request.setAttribute("client", updatedClient);
+            request.setAttribute("societeId", sessionSocieteId);
+            request.setAttribute("adresseId", sessionAdresseId);
             request.setAttribute("error", errorMessage.toString());
             return "client/updateClient.jsp";
         }
 
         try {
-            // Requête pour UPDATE de l'ADRESSE
+            // Mise à jour de l'ADRESSE
             String sqlUpdateAdresse = "UPDATE adresse SET ville = ?, codePostal = ?, nomDeRue = ?, numeroDeRue = ? WHERE idAdresse = ?";
-            PreparedStatement ps1 = connection.prepareStatement(sqlUpdateAdresse);
-            ps1.setString(1, updatedClient.getAdresse().getVille());
-            ps1.setString(2, updatedClient.getAdresse().getCodePostal());
-            ps1.setString(3, updatedClient.getAdresse().getNomDeRue());
-            ps1.setString(4, updatedClient.getAdresse().getNumeroDeRue());
-            ps1.setString(5, request.getParameter("idAdresse"));
-            ps1.executeUpdate();
-            ps1.close();
+            try (PreparedStatement ps1 = connection.prepareStatement(sqlUpdateAdresse)) {
+                ps1.setString(1, updatedClient.getAdresse().getVille());
+                ps1.setString(2, updatedClient.getAdresse().getCodePostal());
+                ps1.setString(3, updatedClient.getAdresse().getNomDeRue());
+                ps1.setString(4, updatedClient.getAdresse().getNumeroDeRue());
+                ps1.setInt(5, sessionAdresseId);
+                ps1.executeUpdate();
+            }
 
-            // Requête pour UPDATE de la SOCIETE
+            // Mise à jour de la SOCIETE
             String sqlUpdateSociete = "UPDATE societe SET telephone = ?, adresseMail = ?, raisonSociale = ?, commentaire = ? WHERE idSociete = ?";
-            PreparedStatement ps2 = connection.prepareStatement(sqlUpdateSociete);
-            ps2.setString(1, updatedClient.getTelephone());
-            ps2.setString(2, updatedClient.getAdresseMail());
-            ps2.setString(3, updatedClient.getRaisonSociale());
-            ps2.setString(4, updatedClient.getCommentaire());
-            ps2.setString(5, request.getParameter("idSociete"));
-            ps2.executeUpdate();
-            ps2.close();
+            try (PreparedStatement ps2 = connection.prepareStatement(sqlUpdateSociete)) {
+                ps2.setString(1, updatedClient.getTelephone());
+                ps2.setString(2, updatedClient.getAdresseMail());
+                ps2.setString(3, updatedClient.getRaisonSociale());
+                ps2.setString(4, updatedClient.getCommentaire());
+                ps2.setInt(5, sessionSocieteId);
+                ps2.executeUpdate();
+            }
 
-            // Requête pour UPDATE du CLIENT
+            // Mise à jour du CLIENT
             String sqlUpdateClient = "UPDATE client SET chiffreAffaire = ?, nbrEmploye = ? WHERE idClient = ?";
-            PreparedStatement ps3 = connection.prepareStatement(sqlUpdateClient);
-            ps3.setLong(1, updatedClient.getChiffreAffaire());
-            ps3.setInt(2, updatedClient.getNbrEmploye());
-            ps3.setInt(3, updatedClient.getIdentifiantClient());
-            ps3.executeUpdate();
-            ps3.close();
+            try (PreparedStatement ps3 = connection.prepareStatement(sqlUpdateClient)) {
+                ps3.setLong(1, updatedClient.getChiffreAffaire());
+                ps3.setInt(2, updatedClient.getNbrEmploye());
+                ps3.setInt(3, updatedClient.getIdentifiantClient());
+                ps3.executeUpdate();
+            }
         } catch (SQLException e) {
-            LOGGER.severe("Erreur lors de la mise à jour du client : " + e.getMessage());
-            request.setAttribute("error", "Erreur lors de la mise à jour, veuillez réessayer.");
+            LOGGER.severe("Erreur SQL lors de la mise à jour du client : " + e.getMessage());
+            request.setAttribute("error", "Erreur lors de la mise à jour, veuillez réessayer plus tard.");
             return "client/listeClient.jsp";
         }
 
-        // Supprimer le token CSRF de la session après validation
+        // Suppression des identifiants sensibles et du token CSRF de la session
+        session.removeAttribute("societeId");
+        session.removeAttribute("adresseId");
         session.removeAttribute("csrfToken");
-        // Retourne une chaîne de redirection : le Front Controller va interpréter ce préfixe
+
         return "redirect:/front?cmd=clients/view";
     }
 }

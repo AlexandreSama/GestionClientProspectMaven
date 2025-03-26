@@ -1,11 +1,5 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 19/03/2025
-  Time: 11:21
-  To change this template use File | Settings | File Templates.
---%>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
