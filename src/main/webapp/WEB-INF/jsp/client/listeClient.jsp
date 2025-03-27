@@ -9,6 +9,7 @@
     <title>Spark | Liste des clients</title>
     <link rel="shortcut icon" href="images/favicon(1).ico" type="image/x-icon">
     <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css">
     <link href="css/all.css" rel="stylesheet">
 </head>
 <body>
@@ -190,6 +191,7 @@
 
 <%@ include file="../footer.jsp" %>
 <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+<script src="node_modules/leaflet/dist/leaflet.js"></script>
 <script src="js/all.js"></script>
 <script src="js/client-prospect-contract/client-prospectModal.js"></script>
 </body>
