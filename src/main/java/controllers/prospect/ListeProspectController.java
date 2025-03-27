@@ -1,11 +1,9 @@
 package controllers.prospect;
 
 import controllers.ICommand;
-import controllers.client.ListeClientController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import models.Contrat;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -85,7 +83,7 @@ public class ListeProspectController implements ICommand {
 
                     String dateStr = rs.getString("dateProspection");
                     LocalDate date = LocalDate.parse(dateStr); // Parsing depuis "yyyy-MM-dd"
-                    DateTimeFormatter frenchFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    DateTimeFormatter frenchFormatter = DateTimeFormatter.ofPattern("dd / MM / yyyy");
 
                     prospectData = new HashMap<>();
                     // Données du prospect
@@ -125,8 +123,8 @@ public class ListeProspectController implements ICommand {
             if (prospects.isEmpty()) {
 
                 request.setAttribute("error", "Erreur,"
-                        + "vous n'avez aucun client à votre actif");
-                LOGGER.info("Aucun client trouvé");
+                        + "vous n'avez aucun prospect à votre actif");
+                LOGGER.info("Aucun prospect trouvé");
                 return "prospect/listeProspect.jsp";
             }
 

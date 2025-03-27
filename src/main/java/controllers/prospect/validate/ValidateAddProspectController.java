@@ -85,7 +85,7 @@ public class ValidateAddProspectController implements ICommand {
 
             // Ajout de l'adresse
             String sqlAddAdresse = "INSERT INTO adresse (numeroDeRue, nomDeRue, codePostal, ville) VALUES (?, ?, ?, ?)";
-            int idAdresse = 0;
+            int idAdresse;
             try (PreparedStatement ps1 = connection.prepareStatement(sqlAddAdresse, Statement.RETURN_GENERATED_KEYS)) {
                 ps1.setString(1, addedProspect.getAdresse().getNumeroDeRue());
                 ps1.setString(2, addedProspect.getAdresse().getNomDeRue());
@@ -104,7 +104,7 @@ public class ValidateAddProspectController implements ICommand {
 
             // Ajout de la société
             String sqlAddSociete = "INSERT INTO societe (adresseMail, commentaire, telephone, raisonSociale, idAdresse, gestionnaire) VALUES (?, ?, ?, ?, ?, ?)";
-            int idSociete = 0;
+            int idSociete;
             try (PreparedStatement ps2 = connection.prepareStatement(sqlAddSociete, Statement.RETURN_GENERATED_KEYS)) {
                 ps2.setString(1, addedProspect.getAdresseMail());
                 ps2.setString(2, addedProspect.getCommentaire());
@@ -138,7 +138,7 @@ public class ValidateAddProspectController implements ICommand {
             // En cas d'erreur, on annule toutes les opérations effectuées dans la transaction
             connection.rollback();
             LOGGER.severe("Erreur SQL lors de la création du prospect : " + e.getMessage());
-            request.setAttribute("error", "Erreur lors de création, veuillez réessayer plus tard.");
+            request.setAttribute("error", "Erreur lors de création du prospect, veuillez réessayer plus tard.");
             return "prospect/listeProspect.jsp";
         } finally {
             // Il est important de réactiver l'auto-commit après la transaction
