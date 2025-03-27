@@ -23,7 +23,7 @@ public class Prospect extends Societe {
     private InterestedType estInteresse;
 
     /**.
-     * Constructeur pour créer un prospect avec les informations spécifiées.
+     * Constructeur pour modifier un prospect avec les informations spécifiées.
      *
      * @param identifiantProspect Identifiant unique du prospect.
      * @param adresse           Adresse du prospect.
@@ -44,6 +44,30 @@ public class Prospect extends Societe {
         super(adresse, adresseMail, commentaire,
                 raisonSociale, telephone, gestionnaire);
         setIdentifiantProspect(identifiantProspect);
+        setDateProspection(dateProspection);
+        setEstInteresse(estInteresse);
+    }
+
+    /**.
+     * Constructeur pour créer un prospect avec les informations spécifiées.
+     *
+     * @param adresse           Adresse du prospect.
+     * @param adresseMail       Adresse e-mail du prospect.
+     * @param commentaire       Commentaire sur le prospect.
+     * @param raisonSociale     Raison sociale du prospect.
+     * @param telephone         Numéro de téléphone du prospect.
+     * @param dateProspection   Date de prospection.
+     * @param estInteresse      Statut d'intérêt (OUI/NON).
+     * @param gestionnaire      L'utilisateur gérant ce prospect
+     */
+    public Prospect(final Adresse adresse,
+                    final String adresseMail, final String commentaire,
+                    final String raisonSociale, final String telephone,
+                    final LocalDate dateProspection,
+                    final InterestedType estInteresse,
+                    final Integer gestionnaire) {
+        super(adresse, adresseMail, commentaire,
+                raisonSociale, telephone, gestionnaire);
         setDateProspection(dateProspection);
         setEstInteresse(estInteresse);
     }

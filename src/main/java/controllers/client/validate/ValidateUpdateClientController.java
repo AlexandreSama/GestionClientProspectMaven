@@ -72,8 +72,7 @@ public class ValidateUpdateClientController implements ICommand {
         );
         updatedClient.setIdentifiant(sessionSocieteId);
 
-        // Vérifier que l'utilisateur connecté
-        // est bien le gestionnaire du client
+        // Vérifier que l'utilisateur connecté est bien le gestionnaire du client
         String sqlCheck = "SELECT s.gestionnaire FROM client c JOIN societe s ON c.idSociete = s.idSociete WHERE c.idClient = ?";
         try (PreparedStatement psCheck = connection.prepareStatement(sqlCheck)) {
             psCheck.setInt(1, updatedClient.getIdentifiantClient());
@@ -90,9 +89,7 @@ public class ValidateUpdateClientController implements ICommand {
                 }
             }
         } catch (SQLException e) {
-            request.setAttribute("error", "Erreur lors de la vérification de "
-                    +
-                    "l'autorisation. Veuillez réessayer plus tard.");
+            request.setAttribute("error", "Erreur lors de la vérification de l'autorisation. Veuillez réessayer plus tard.");
             return "erreur.jsp";
         }
 
@@ -118,6 +115,9 @@ public class ValidateUpdateClientController implements ICommand {
         }
 
         try {
+            // Démarrer la transaction
+            connection.setAutoCommit(false);
+
             // Mise à jour de l'ADRESSE
             String sqlUpdateAdresse = "UPDATE adresse SET ville = ?, codePostal = ?, nomDeRue = ?, numeroDeRue = ? WHERE idAdresse = ?";
             try (PreparedStatement ps1 = connection.prepareStatement(sqlUpdateAdresse)) {
@@ -148,10 +148,16 @@ public class ValidateUpdateClientController implements ICommand {
                 ps3.setInt(3, updatedClient.getIdentifiantClient());
                 ps3.executeUpdate();
             }
+
+            // Si tout s'est bien passé, on valide la transaction
+            connection.commit();
         } catch (SQLException e) {
+            connection.rollback();
             LOGGER.severe("Erreur SQL lors de la mise à jour du client : " + e.getMessage());
             request.setAttribute("error", "Erreur lors de la mise à jour, veuillez réessayer plus tard.");
             return "client/listeClient.jsp";
+        } finally {
+            connection.setAutoCommit(true);
         }
 
         // Suppression des identifiants sensibles et du token CSRF de la session

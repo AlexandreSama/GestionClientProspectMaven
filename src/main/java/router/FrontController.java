@@ -11,10 +11,13 @@ import controllers.client.UpdateClientController;
 import controllers.client.validate.ValidateAddClientController;
 import controllers.client.validate.ValidateDeleteClientController;
 import controllers.client.validate.ValidateUpdateClientController;
-import controllers.prospect.CreateProspectController;
+import controllers.prospect.AddProspectController;
 import controllers.prospect.DeleteProspectController;
 import controllers.prospect.ListeProspectController;
 import controllers.prospect.UpdateProspectController;
+import controllers.prospect.validate.ValidateAddProspectController;
+import controllers.prospect.validate.ValidateDeleteProspectController;
+import controllers.prospect.validate.ValidateUpdateProspectController;
 import controllers.user.LoginController;
 import controllers.user.UserForm;
 import controllers.user.UserLogout;
@@ -83,10 +86,14 @@ public class FrontController extends HttpServlet {
         commands.put("clients/add/validate", new ValidateAddClientController(connection));
         commands.put("clients/delete/validate", new ValidateDeleteClientController(connection));
         // Enregistrement des commandes pour les Prospects
-        commands.put("prospects/view", new ListeProspectController());
-        commands.put("prospects/add", new CreateProspectController());
+        commands.put("prospects/view", new ListeProspectController(connection));
+        commands.put("prospects/add", new AddProspectController());
         commands.put("prospects/update", new UpdateProspectController());
         commands.put("prospects/delete", new DeleteProspectController());
+        // Enregistrements des commandes de validation Prospect
+        commands.put("prospects/update/validate", new ValidateUpdateProspectController());
+        commands.put("prospects/add/validate", new ValidateAddProspectController(connection));
+        commands.put("prospects/delete/validate", new ValidateDeleteProspectController());
         // Enregistrement des commandes pour l'utilisateur
         commands.put("user/login", new LoginController());
         commands.put("user/logout", new UserLogout());

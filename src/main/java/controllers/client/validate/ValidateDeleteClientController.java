@@ -28,7 +28,6 @@ public class ValidateDeleteClientController implements ICommand {
         this.connection = connection;
     }
 
-    @Override
     public String execute(HttpServletRequest request,
                           HttpServletResponse response)
             throws Exception {
@@ -119,6 +118,8 @@ public class ValidateDeleteClientController implements ICommand {
         }
 
         try {
+            // Démarrer la transaction
+            connection.setAutoCommit(false);
 
             // Suppression du CLIENT
             String sqlDeleteClient = "DELETE FROM client WHERE idClient = ?";
@@ -140,10 +141,18 @@ public class ValidateDeleteClientController implements ICommand {
                 ps1.setInt(1, sessionAdresseId);
                 ps1.execute();
             }
+
+            // Tout s'est bien passé, on valide la transaction
+            connection.commit();
         } catch (SQLException e) {
+            // En cas d'erreur, on annule la transaction
+            connection.rollback();
             LOGGER.severe("Erreur SQL lors de la suppression du client : " + e.getMessage());
             request.setAttribute("error", "Erreur lors de la suppression, veuillez réessayer plus tard.");
             return "client/listeClient.jsp";
+        } finally {
+            // Réactiver l'auto-commit pour la connexion
+            connection.setAutoCommit(true);
         }
 
         // Suppression des identifiants sensibles et du token CSRF de la session

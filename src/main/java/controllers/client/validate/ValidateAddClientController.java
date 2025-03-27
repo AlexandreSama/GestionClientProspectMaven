@@ -75,12 +75,14 @@ public class ValidateAddClientController implements ICommand {
             return "client/createClient.jsp";
         }
 
-        try{
+        // Démarrage de la transaction
+        try {
+            connection.setAutoCommit(false);
 
-            //Ajout de l'adresse
+            // Ajout de l'adresse
             String sqlAddAdresse = "INSERT INTO adresse (numeroDeRue, nomDeRue, codePostal, ville) VALUES (?, ?, ?, ?)";
-            int idAdresse = 0;
-            try(PreparedStatement ps1 = connection.prepareStatement(sqlAddAdresse, Statement.RETURN_GENERATED_KEYS)) {
+            int idAdresse;
+            try (PreparedStatement ps1 = connection.prepareStatement(sqlAddAdresse, Statement.RETURN_GENERATED_KEYS)) {
                 ps1.setString(1, addedClient.getAdresse().getNumeroDeRue());
                 ps1.setString(2, addedClient.getAdresse().getNomDeRue());
                 ps1.setString(3, addedClient.getAdresse().getCodePostal());
@@ -91,15 +93,15 @@ public class ValidateAddClientController implements ICommand {
                     if (rs.next()) {
                         idAdresse = rs.getInt(1);
                     } else {
-                        LOGGER.severe("Erreur, aucun ID d'adresse généré");
+                        throw new SQLException("Erreur, aucun ID d'adresse généré");
                     }
                 }
             }
 
-            //Ajout de la société
+            // Ajout de la société
             String sqlAddSociete = "INSERT INTO societe (adresseMail, commentaire, telephone, raisonSociale, idAdresse, gestionnaire) VALUES (?, ?, ?, ?, ?, ?)";
-            int idSociete = 0;
-            try(PreparedStatement ps2 = connection.prepareStatement(sqlAddSociete, Statement.RETURN_GENERATED_KEYS)) {
+            int idSociete;
+            try (PreparedStatement ps2 = connection.prepareStatement(sqlAddSociete, Statement.RETURN_GENERATED_KEYS)) {
                 ps2.setString(1, addedClient.getAdresseMail());
                 ps2.setString(2, addedClient.getCommentaire());
                 ps2.setString(3, addedClient.getTelephone());
@@ -112,23 +114,31 @@ public class ValidateAddClientController implements ICommand {
                     if (rs.next()) {
                         idSociete = rs.getInt(1);
                     } else {
-                        LOGGER.severe("Erreur, aucun ID d'adresse généré");
+                        throw new SQLException("Erreur, aucun ID de société généré");
                     }
                 }
             }
 
-            //Ajout du client
+            // Ajout du client
             String sqlAddClient = "INSERT INTO client (chiffreAffaire, nbrEmploye, idSociete) VALUES (?, ?, ?)";
-            try(PreparedStatement ps3 = connection.prepareStatement(sqlAddClient)) {
+            try (PreparedStatement ps3 = connection.prepareStatement(sqlAddClient)) {
                 ps3.setLong(1, addedClient.getChiffreAffaire());
                 ps3.setLong(2, addedClient.getNbrEmploye());
                 ps3.setInt(3, idSociete);
                 ps3.executeUpdate();
             }
-        } catch (SQLException e){
+
+            // Tout s'est bien passé : commit de la transaction
+            connection.commit();
+        } catch (SQLException e) {
+            // En cas d'erreur, rollback de la transaction
+            connection.rollback();
             LOGGER.severe("Erreur SQL lors de la création du client : " + e.getMessage());
             request.setAttribute("error", "Erreur lors de création, veuillez réessayer plus tard.");
             return "client/listeClient.jsp";
+        } finally {
+            // Réactivation de l'auto-commit
+            connection.setAutoCommit(true);
         }
 
         session.removeAttribute("csrfToken");
