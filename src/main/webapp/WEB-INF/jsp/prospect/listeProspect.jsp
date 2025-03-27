@@ -53,7 +53,7 @@
             <tbody>
             <c:forEach var="prospect" items="${prospects}" varStatus="status">
                 <tr>
-                    <th scope="row">1</th>
+                    <th scope="row">${status.index + 1}</th>
                     <td>
                         <a href="#clientModal"
                            class="text-decoration-none entity-link"
