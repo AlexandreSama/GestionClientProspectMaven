@@ -130,7 +130,6 @@
 <%@ include file="../footer.jsp" %>
 <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 <script src="node_modules/leaflet/dist/leaflet.js"></script>
-<script src="js/all.js"></script>
-<script src="js/client-prospect-contract/client-prospectModal.js"></script>
+<script src="js/client-prospectModal.js"></script>
 </body>
 </html>
