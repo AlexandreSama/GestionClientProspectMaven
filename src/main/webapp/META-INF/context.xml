@@ -7,6 +7,6 @@
             driverClassName="com.mysql.cj.jdbc.Driver"
             username="${mysql.user}"
             password="${mysql.password}"
-            url="${mysql.url}ecf?serverTimezone=UTC"
+            url="${mysql.url}ecfalex?serverTimezone=UTC"
     />
 </Context>

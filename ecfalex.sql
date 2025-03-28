@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 28, 2025 at 07:01 AM
+-- Generation Time: Mar 28, 2025 at 07:33 AM
 -- Server version: 9.2.0
 -- PHP Version: 8.1.10
 
@@ -18,8 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ecf`
+-- Database: `ecfalex`
 --
+CREATE DATABASE IF NOT EXISTS `ecfalex` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `ecfalex`;
 
 -- --------------------------------------------------------
 
@@ -168,7 +170,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `pwd`) VALUES
-(8, 'alex', '$argon2i$v=19$m=65536,t=2,p=1$PKMQeurQO6GGx+tSIa6V7A$ZHQR8T/Gx5KW/3PGlUR6wVrexY9lH2sF59ZZCnh1cMk');
+(8, 'alex', '$argon2i$v=19$m=65536,t=2,p=1$PKMQeurQO6GGx+tSIa6V7A$ZHQR8T/Gx5KW/3PGlUR6wVrexY9lH2sF59ZZCnh1cMk'),
+(9, 'Djinn', '$argon2i$v=19$m=65536,t=2,p=1$cgMpp9Sk+85/uKLG/U1ViQ$zKatZDRbtGMga16hwvL2AlktAZWNATNAOqF3EvrRBuA');
 
 --
 -- Indexes for dumped tables
@@ -254,7 +257,7 @@ ALTER TABLE `societe`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
