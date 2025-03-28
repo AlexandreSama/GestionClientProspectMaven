@@ -59,30 +59,30 @@
                            data-phone="${client.telephone}"
                            data-chiffreAffaire="${client.chiffreAffaire}"
                            data-nbrEmploye="${client.nbrEmploye}"
-                           data-localisation="${client.numeroDeRue} ${client.nomDeRue}, ${client.codePostal} ${client.ville}"
+                           data-localisation="${client.adresse.numeroDeRue} ${client.adresse.nomDeRue}, ${client.adresse.codePostal} ${client.adresse.ville}"
                            data-meteo="">
                                 ${client.raisonSociale}
                         </a>
                     </td>
                     <td>${client.adresseMail}</td>
                     <td>${client.telephone}</td>
-                    <td>${client.numeroDeRue}</td>
-                    <td>${client.nomDeRue}</td>
-                    <td>${client.codePostal}</td>
-                    <td>${client.ville}</td>
+                    <td>${client.adresse.numeroDeRue}</td>
+                    <td>${client.adresse.nomDeRue}</td>
+                    <td>${client.adresse.codePostal}</td>
+                    <td>${client.adresse.ville}</td>
                     <td>${client.chiffreAffaire}</td>
                     <td>${client.nbrEmploye}</td>
                     <td>
                         <!-- Bouton pour ouvrir la modal des contrats de CE client -->
                         <button class="btn btn-sm btn-info"
                                 data-bs-toggle="modal"
-                                data-bs-target="#contractsModal-${client.idClient}">
+                                data-bs-target="#contractsModal-${client.identifiant}">
                             Voir les contrats
                         </button>
                     </td>
                     <td>
-                        <a href="?cmd=clients/update&id=${client.idClient}" class="btn btn-sm btn-primary">Modifier</a>
-                        <a href="?cmd=clients/delete&id=${client.idClient}" class="btn btn-sm btn-danger ms-2">Supprimer</a>
+                        <a href="?cmd=clients/update&id=${client.identifiant}" class="btn btn-sm btn-primary">Modifier</a>
+                        <a href="?cmd=clients/delete&id=${client.identifiant}" class="btn btn-sm btn-danger ms-2">Supprimer</a>
                     </td>
                 </tr>
             </c:forEach>
@@ -125,12 +125,12 @@
 
     <!-- 2) Génération des modals contrats en dehors du tableau -->
     <c:forEach var="client" items="${clients}">
-        <div class="modal fade" id="contractsModal-${client.idClient}" tabindex="-1"
-             aria-labelledby="contractsModalLabel-${client.idClient}" aria-hidden="true">
+        <div class="modal fade" id="contractsModal-${client.identifiant}" tabindex="-1"
+             aria-labelledby="contractsModalLabel-${client.identifiant}" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="contractsModalLabel-${client.idClient}">
+                        <h5 class="modal-title" id="contractsModalLabel-${client.identifiant}">
                             Liste des Contrats pour ${client.raisonSociale}
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
@@ -147,8 +147,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:if test="${not empty client.contracts}">
-                                    <c:forEach var="contract" items="${client.contracts}">
+                                <c:if test="${not empty client.contrats}">
+                                    <c:forEach var="contract" items="${client.contrats}">
                                         <tr>
                                             <td>${contract.idContrat}</td>
                                             <td>${contract.nomContrat}</td>
@@ -166,7 +166,7 @@
                                         </tr>
                                     </c:forEach>
                                 </c:if>
-                                <c:if test="${empty client.contracts}">
+                                <c:if test="${empty client.contrats}">
                                     <tr>
                                         <td colspan="4" class="text-center">Aucun contrat disponible.</td>
                                     </tr>

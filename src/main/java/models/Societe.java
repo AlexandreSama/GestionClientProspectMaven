@@ -24,7 +24,7 @@ public abstract class Societe {
     /**
      * Adresse de la société
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST) // ou CascadeType.ALL
     @JoinColumn(name = "adresse_id")
     @NotNull
     private Adresse adresse;

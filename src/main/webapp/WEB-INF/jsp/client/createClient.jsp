@@ -32,7 +32,7 @@
                     class="form-control"
                     id="clientId"
                     name="clientId"
-                    value="${client.identifiantClient}"
+                    value="${client.identifiant}"
                     readonly
             />
         </div>
