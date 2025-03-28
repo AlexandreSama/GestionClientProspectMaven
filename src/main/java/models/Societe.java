@@ -1,69 +1,82 @@
 package models;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-/**.
+/**
  * Classe métier abstract pour une société
  */
+@Entity
+@Table(name = "societe")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Societe {
-    /**.
+
+    /**
      * Identifiant de la société
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer identifiantSociete = null;
-    /**.
+
+    /**
      * Adresse de la société
      */
+    @OneToOne
+    @JoinColumn(name = "adresse_id")
     @NotNull
     private Adresse adresse;
-    /**.
+
+    /**
      * Email de la société
      */
     @NotNull
     @Email
     private String adresseMail;
-    /**.
+
+    /**
      * Commentaire de la société
      */
     private String commentaire;
-    /**.
+
+    /**
      * Téléphone de la société
      */
     @NotNull
     @Pattern(regexp = "^[0-9]{10}$")
     @Size(min = 10, max = 10)
     private String telephone;
-    /**.
+
+    /**
      * Raison Sociale de la société
      */
     @NotNull
     @Size(min = 2, max = 50)
     private String raisonSociale;
 
-    /**.
-     * Gérant de la société
+    /**
+     * Gérant de la société (l'utilisateur qui gère la société).
      */
     @NotNull
-    private Integer gestionnaire;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User gestionnaire;
 
-    /**.
-     * Constructeur pour initialiser une
-     * société avec les informations de base.
-     * Les setters sont utilisés pour
-     * appliquer la validation sur chaque attribut.
+    /**
+     * Constructeur pour initialiser une société avec les informations de base.
      *
      * @param adresse        Adresse de la société.
      * @param adresseMail    Adresse e-mail de la société.
      * @param commentaire    Commentaire sur la société.
      * @param raisonSociale  Raison sociale de la société.
      * @param telephone      Numéro de téléphone de la société.
-     * @param gestionnaire   Le gérant de cet société
+     * @param gestionnaire   L'utilisateur gérant cette société.
      */
     public Societe(final Adresse adresse, final String adresseMail,
                    final String commentaire, final String raisonSociale,
-                   final String telephone, final Integer gestionnaire) {
+                   final String telephone, final User gestionnaire) {
         setAdresse(adresse);
         setAdresseMail(adresseMail);
         setCommentaire(commentaire);
@@ -72,138 +85,75 @@ public abstract class Societe {
         setGestionnaire(gestionnaire);
     }
 
-    /**.
-     * Retourne l'adresse de la société.
-     *
-     * @return Adresse de la société.
-     */
+    // Constructeur sans argument requis par JPA
+    public Societe() {
+    }
+
     public Adresse getAdresse() {
         return adresse;
     }
 
-    /**.
-     * Définit l'adresse de la société.
-     *
-     * @param adresse Adresse à définir.
-     */
     public void setAdresse(final Adresse adresse) {
         this.adresse = adresse;
     }
 
-    /**.
-     * Retourne l'adresse e-mail de la société.
-     *
-     * @return Adresse e-mail de la société.
-     */
     public String getAdresseMail() {
         return adresseMail;
     }
 
-    /**.
-     * Définit l'adresse e-mail de la société.
-     *
-     * @param adresseMail Adresse e-mail à définir.
-     */
     public void setAdresseMail(final String adresseMail) {
         this.adresseMail = adresseMail;
     }
 
-    /**.
-     * Retourne le commentaire sur la société.
-     *
-     * @return Commentaire sur la société.
-     */
     public String getCommentaire() {
         return commentaire;
     }
 
-    /**.
-     * Définit un commentaire pour la société.
-     *
-     * @param commentaire Commentaire à définir.
-     */
     public void setCommentaire(final String commentaire) {
         this.commentaire = commentaire != null ? commentaire.trim() : null;
     }
 
-    /**.
-     * Retourne l'identifiant unique de la société.
-     *
-     * @return Identifiant de la société.
-     */
     public Integer getIdentifiant() {
         return identifiantSociete;
     }
 
-    /**.
-     * Définit un identifiant pour la société
-     * @param identifiant l'identifiant a donner pour cet société
-     */
     public void setIdentifiant(final Integer identifiant) {
         this.identifiantSociete = identifiant;
     }
 
-    /**.
-     * Retourne la raison sociale de la société.
-     *
-     * @return Raison sociale de la société.
-     */
     public String getRaisonSociale() {
         return raisonSociale;
     }
 
-    /**.
-     * Définit la raison sociale de la société.
-     *
-     * @param raisonSociale Raison sociale à définir.
-     */
     public void setRaisonSociale(final String raisonSociale) {
         this.raisonSociale = raisonSociale;
     }
 
-    /**.
-     * Retourne le numéro de téléphone de la société.
-     *
-     * @return Numéro de téléphone de la société.
-     */
     public String getTelephone() {
         return telephone;
     }
 
-    /**.
-     * Définit le numéro de téléphone de la société.
-     *
-     * @param telephone Numéro de téléphone à définir.
-     */
     public void setTelephone(final String telephone) {
         this.telephone = telephone.trim();
     }
 
-    /**.
-     * Retourne l'utilisateur gérant cet société
-     * @return l'utilisateur gérant cet société
-     */
-    public Integer getGestionnaire() {
+    public User getGestionnaire() {
         return gestionnaire;
     }
 
-    /**.
-     * Ajoute l'utilisateur gérant cet société
-     * @param gestionnaire l'utilisateur gérant cet société
-     */
-    public void setGestionnaire(final Integer gestionnaire) {
+    public void setGestionnaire(final User gestionnaire) {
         this.gestionnaire = gestionnaire;
     }
 
     @Override
     public String toString() {
         return "Societe{" +
-                ", identifiantSociete=" + identifiantSociete +
+                "identifiantSociete=" + identifiantSociete +
                 ", adresseMail='" + adresseMail + '\'' +
                 ", commentaire='" + commentaire + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", raisonSociale='" + raisonSociale + '\'' +
-                ", gestionnaire=" + gestionnaire +
+                ", gestionnaire=" + (gestionnaire != null ? gestionnaire.getIdentifiantUser() : null) +
                 '}';
     }
 }

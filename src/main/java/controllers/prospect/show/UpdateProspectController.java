@@ -1,11 +1,14 @@
-package controllers.user;
+package controllers.prospect.show;
 
 import controllers.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
-public class UserLogout implements ICommand {
+/**.
+ * Controller servant pour la page de mise a jour de prospect
+ * {@inheritDoc}
+ */
+public class UpdateProspectController implements ICommand {
 
     /**.
      * Méthode d'éxécution du controller
@@ -17,9 +20,6 @@ public class UserLogout implements ICommand {
     public String execute(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws Exception {
-        HttpSession session = request.getSession();
-        session.invalidate();
-        request.setAttribute("logout", "Vous êtes désormais déconnecté");
-        return "index.jsp";
+        return "prospect/updateProspect.jsp";
     }
 }

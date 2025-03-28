@@ -1,4 +1,4 @@
-package controllers.prospect;
+package controllers.prospect.show;
 
 import controllers.ICommand;
 import jakarta.servlet.http.HttpServletRequest;

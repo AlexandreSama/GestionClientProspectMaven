@@ -10,6 +10,7 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import models.Adresse;
 import models.Prospect;
+import models.User;
 import models.types.InterestedType;
 
 import java.sql.*;
@@ -43,7 +44,10 @@ public class ValidateAddProspectController implements ICommand {
 
         // Récupération de l'utilisateur connecté depuis la session
         List<?> userList = (List<?>) session.getAttribute("user");
-        Integer userId = (Integer) userList.getFirst();
+        Integer userId = (Integer) userList.get(0);
+        String username = (String) userList.get(1);
+        // Reconstitution d'un objet User minimal
+        User connectedUser = new User(userId, "", username);
 
         Prospect addedProspect = new Prospect(
                 new Adresse(
@@ -58,7 +62,7 @@ public class ValidateAddProspectController implements ICommand {
                 request.getParameter("phone"),
                 LocalDate.parse(request.getParameter("dateProspection")),
                 request.getParameter("estInteresse").equals("OUI") ? InterestedType.OUI : InterestedType.NON,
-                userId
+                connectedUser
         );
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -111,7 +115,7 @@ public class ValidateAddProspectController implements ICommand {
                 ps2.setString(3, addedProspect.getTelephone());
                 ps2.setString(4, addedProspect.getRaisonSociale());
                 ps2.setInt(5, idAdresse);
-                ps2.setInt(6, addedProspect.getGestionnaire());
+                ps2.setInt(6, addedProspect.getGestionnaire().getIdentifiantUser());
                 ps2.executeUpdate();
 
                 try (ResultSet rs = ps2.getGeneratedKeys()) {

@@ -1,4 +1,4 @@
-package controllers.client;
+package controllers.user.show;
 
 import controllers.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,13 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-/**.
- * Controller servant pour la page Création Client
- * {@inheritDoc}
- */
-public class AddClientController implements ICommand {
-
-    public AddClientController() {}
+public class RegisterController implements ICommand {
 
     /**.
      * Méthode d'éxécution du controller
@@ -32,7 +26,7 @@ public class AddClientController implements ICommand {
         String token = generateToken();
         session.setAttribute("csrfToken", token);
         request.setAttribute("token", token);
-        return "client/createClient.jsp";
+        return "user/register.jsp";
     }
 
     private static String generateToken() {

@@ -1,14 +1,14 @@
-package controllers.prospect;
+package controllers.prospect.show;
 
 import controllers.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**.
- * Controller servant pour la page de mise a jour de prospect
+ * Controller servant pour la page de suppression de prospect
  * {@inheritDoc}
  */
-public class UpdateProspectController implements ICommand {
+public class DeleteProspectController implements ICommand {
 
     /**.
      * Méthode d'éxécution du controller
@@ -20,6 +20,6 @@ public class UpdateProspectController implements ICommand {
     public String execute(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws Exception {
-        return "prospect/updateProspect.jsp";
+        return "prospect/deleteProspect.jsp";
     }
 }

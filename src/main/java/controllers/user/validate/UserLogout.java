@@ -1,14 +1,11 @@
-package controllers.prospect;
+package controllers.user.validate;
 
 import controllers.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
-/**.
- * Controller servant pour la page de suppression de prospect
- * {@inheritDoc}
- */
-public class DeleteProspectController implements ICommand {
+public class UserLogout implements ICommand {
 
     /**.
      * Méthode d'éxécution du controller
@@ -20,6 +17,9 @@ public class DeleteProspectController implements ICommand {
     public String execute(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws Exception {
-        return "prospect/deleteProspect.jsp";
+        HttpSession session = request.getSession();
+        session.invalidate();
+        request.setAttribute("logout", "Vous êtes désormais déconnecté");
+        return "index.jsp";
     }
 }

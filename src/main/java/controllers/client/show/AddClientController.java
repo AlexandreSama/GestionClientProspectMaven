@@ -1,4 +1,4 @@
-package controllers.prospect;
+package controllers.client.show;
 
 import controllers.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,12 +9,12 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 /**.
- * Controller servant pour la page de création de prospect
+ * Controller servant pour la page Création Client
  * {@inheritDoc}
  */
-public class AddProspectController implements ICommand {
+public class AddClientController implements ICommand {
 
-    public AddProspectController() {}
+    public AddClientController() {}
 
     /**.
      * Méthode d'éxécution du controller
@@ -32,7 +32,7 @@ public class AddProspectController implements ICommand {
         String token = generateToken();
         session.setAttribute("csrfToken", token);
         request.setAttribute("token", token);
-        return "prospect/createProspect.jsp";
+        return "client/createClient.jsp";
     }
 
     private static String generateToken() {

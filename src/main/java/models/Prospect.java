@@ -40,7 +40,7 @@ public class Prospect extends Societe {
                     final String raisonSociale, final String telephone,
                     final LocalDate dateProspection,
                     final InterestedType estInteresse,
-                    final Integer gestionnaire) {
+                    final User gestionnaire) {
         super(adresse, adresseMail, commentaire,
                 raisonSociale, telephone, gestionnaire);
         setIdentifiantProspect(identifiantProspect);
@@ -65,7 +65,7 @@ public class Prospect extends Societe {
                     final String raisonSociale, final String telephone,
                     final LocalDate dateProspection,
                     final InterestedType estInteresse,
-                    final Integer gestionnaire) {
+                    final User gestionnaire) {
         super(adresse, adresseMail, commentaire,
                 raisonSociale, telephone, gestionnaire);
         setDateProspection(dateProspection);

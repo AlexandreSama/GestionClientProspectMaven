@@ -1,4 +1,4 @@
-package controllers.user;
+package controllers.user.show;
 
 import controllers.ICommand;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,194 +1,107 @@
 package models;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import org.hibernate.validator.constraints.Range;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**.
+/**
  * Classe métier pour un client
  */
+@Entity
+@Table(name = "client")
 public class Client extends Societe {
 
-    /**.
-     * Identifiant du client
-     */
-    private Integer identifiantClient = null;
-    /**.
-     * chiffre d'affaire du client
+    /**
+     * Chiffre d'affaires du client
      */
     @NotNull
     @Max(2000000)
     private long chiffreAffaire;
-    /**.
+
+    /**
      * Nombre d'employés du client
      */
     @NotNull
     @Max(2000000)
     private int nbrEmploye;
-    /**.
+
+    /**
      * Liste de contrats du client
      */
-    private final List<Contrat> contrats = new ArrayList<>();
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Contrat> contrats = new ArrayList<>();
 
-    /**.
-     * Constructeur pour modifier / supprimer un
-     * client avec les informations spécifiées.
-     *
-     * @param identifiantClient Identifiant spécifique au client.
-     * @param adresse           Adresse du client.
-     * @param adresseMail       Adresse e-mail du client.
-     * @param commentaire       Commentaire sur le client.
-     * @param raisonSociale     Raison sociale du client.
-     * @param telephone         Numéro de téléphone du client.
-     * @param chiffreAffaire    Chiffre d'affaires du client.
-     * @param nbrEmploye        Nombre d'employés du client.
-     * @param gestionnaire      L'utilisateur gérant le client
-     */
-    public Client(final Integer identifiantClient, final Adresse adresse,
-                  final String adresseMail, final String commentaire,
-                  final String raisonSociale, final String telephone,
-                  final long chiffreAffaire, final int nbrEmploye,
-                  final Integer gestionnaire) {
-        super(adresse, adresseMail, commentaire,
-                raisonSociale, telephone, gestionnaire);
-        setIdentifiantClient(identifiantClient);
-        setChiffreAffaire(chiffreAffaire);
-        setNbrEmploye(nbrEmploye);
+    // Constructeur sans argument requis par JPA
+    public Client() {
+        super();
     }
 
     /**
-     * Constructeur pour créer un client
-     * @param adresse
-     * @param adresseMail
-     * @param commentaire
-     * @param raisonSociale
-     * @param telephone
-     * @param chiffreAffaire
-     * @param nbrEmploye
-     * @param gestionnaire
+     * Constructeur pour modifier / supprimer un client.
      */
     public Client(final Adresse adresse,
                   final String adresseMail, final String commentaire,
                   final String raisonSociale, final String telephone,
                   final long chiffreAffaire, final int nbrEmploye,
-                  final Integer gestionnaire) {
-        super(adresse, adresseMail, commentaire,
-                raisonSociale, telephone, gestionnaire);
-        setChiffreAffaire(chiffreAffaire);
-        setNbrEmploye(nbrEmploye);
+                  final User gestionnaire) {
+        super(adresse, adresseMail, commentaire, raisonSociale, telephone, gestionnaire);
+        this.chiffreAffaire = chiffreAffaire;
+        this.nbrEmploye = nbrEmploye;
     }
 
-    /**.
-     * Définit l'identifiant spécifique du client.
-     *
-     * @param identifiantClient Identifiant du client.
+    /**
+     * Constructeur pour créer un client.
      */
-    public void setIdentifiantClient(final Integer identifiantClient) {
-        this.identifiantClient = identifiantClient;
+    public Client(final Adresse adresse,
+                  final String adresseMail, final String commentaire,
+                  final String raisonSociale, final String telephone,
+                  final long chiffreAffaire, final int nbrEmploye,
+                  final User gestionnaire, final List<Contrat> contrats) {
+        super(adresse, adresseMail, commentaire, raisonSociale, telephone, gestionnaire);
+        this.chiffreAffaire = chiffreAffaire;
+        this.nbrEmploye = nbrEmploye;
+        this.contrats = contrats;
     }
 
-    /**.
-     * Retourne l'identifiant spécifique du client.
-     *
-     * @return Identifiant du client.
-     */
-    public Integer getIdentifiantClient() {
-        return identifiantClient;
-    }
-
-    /**.
-     * Retourne le chiffre d'affaires du client.
-     *
-     * @return Chiffre d'affaires.
-     */
     public long getChiffreAffaire() {
         return chiffreAffaire;
     }
 
-    /**.
-     * Définit le chiffre d'affaires du client après validation.
-     *
-     * @param chiffreAffaire Chiffre d'affaires à définir.
-     */
-    public void setChiffreAffaire(final long chiffreAffaire)  {
+    public void setChiffreAffaire(final long chiffreAffaire) {
         this.chiffreAffaire = chiffreAffaire;
     }
 
-    /**.
-     * Retourne le nombre d'employés du client.
-     *
-     * @return Nombre d'employés.
-     */
     public int getNbrEmploye() {
         return nbrEmploye;
     }
 
-    /**.
-     * Définit le nombre d'employés du client après validation.
-     *
-     * @param nbrEmploye Nombre d'employés à définir.
-     */
     public void setNbrEmploye(final int nbrEmploye) {
         this.nbrEmploye = nbrEmploye;
     }
 
-    /**.
-     * Méthode toString pour récupérer l'ensemble
-     * des infos de l'objet
-     * @return Les infos complétes de l'objet
-     */
-    @Override
-    public String toString() {
-        return "Client{"
-                +
-                "idClient="
-                + getIdentifiantClient()
-                +
-                ", raisonSociale='"
-                + getRaisonSociale()
-                + '\''
-                +
-                ", telephone='"
-                + getTelephone()
-                + '\''
-                +
-                ", email='"
-                + getAdresseMail()
-                + '\''
-                +
-                ", chiffreAffaire="
-                + getChiffreAffaire()
-                +
-                ", nbrEmploye="
-                + getNbrEmploye()
-                +
-                ", adresse="
-                + (getAdresse() != null ? getAdresse().toString() : "null")
-                +
-                ", SocieteID="
-                + (getIdentifiant())
-                +
-                '}';
-    }
-
-    /**.
-     * Récupère la liste des contrats
-     * @return une liste de contrats
-     */
     public List<Contrat> getContrats() {
         return contrats;
     }
 
-    /**.
-     * Ajoute un contrat au client
-     * @param contrat Un objet Contrat
+    /**
+     * Ajoute un contrat au client et établit la relation bidirectionnelle.
      */
     public void addContrat(final Contrat contrat) {
-        this.contrats.add(contrat);
+        contrats.add(contrat);
+        contrat.setClient(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "idClient=" + getIdentifiant() +
+                ", chiffreAffaire=" + chiffreAffaire +
+                ", nbrEmploye=" + nbrEmploye +
+                '}';
     }
 }

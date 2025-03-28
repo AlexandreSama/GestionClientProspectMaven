@@ -1,4 +1,4 @@
-package controllers.user;
+package controllers.prospect.show;
 
 import controllers.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,7 +8,13 @@ import jakarta.servlet.http.HttpSession;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-public class RegisterController implements ICommand {
+/**.
+ * Controller servant pour la page de création de prospect
+ * {@inheritDoc}
+ */
+public class AddProspectController implements ICommand {
+
+    public AddProspectController() {}
 
     /**.
      * Méthode d'éxécution du controller
@@ -26,7 +32,7 @@ public class RegisterController implements ICommand {
         String token = generateToken();
         session.setAttribute("csrfToken", token);
         request.setAttribute("token", token);
-        return "user/register.jsp";
+        return "prospect/createProspect.jsp";
     }
 
     private static String generateToken() {

@@ -1,138 +1,116 @@
 package models;
 
-/**.
- * Classe métier pour un contrat
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+/**
+ * Classe représentant un contrat.
  */
+@Entity
+@Table(name = "contrat")
 public class Contrat {
 
-    /**.
-     * Identifiant du contrat
+    /**
+     * Identifiant du contrat.
      */
-    private Integer idContrat = null;
-    /**.
-     * Identifiant du client
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer idContrat;
+
+    /**
+     * Client associé au contrat.
      */
-    private Integer idClient = null;
-    /**.
-     * Nom du contrat
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
+
+    /**
+     * Nom du contrat.
      */
     private String nomContrat;
-    /**.
-     * Montant du contrat
+
+    /**
+     * Montant du contrat.
      */
     private Double montantContrat;
 
-    /**.
-     * Constructeur pour initialiser un contrat.
+    /**
+     * Constructeur sans argument requis par JPA.
+     */
+    public Contrat() {
+    }
+
+    /**
+     * Constructeur pour initialiser un contrat sans client.
      *
-     * @param nomContrat Nom du contrat
-     * @param montantContrat Montant du contrat
+     * @param nomContrat    Nom du contrat.
+     * @param montantContrat Montant du contrat.
      */
     public Contrat(final String nomContrat, final Double montantContrat) {
-        setNomContrat(nomContrat);
-        setMontantContrat(montantContrat);
-    }
-
-    /**.
-     * Constructeur pour un contrat déjà préparé
-     * @param id L'identifiant du contrat
-     * @param idClient L'identifiant du client lié au contrat
-     * @param nomContrat Le nom du contrat
-     * @param montantContrat Le montant du contrat
-     */
-    public Contrat(final Integer id, final Integer idClient,
-                   final String nomContrat, final Double montantContrat) {
-        setIdContrat(id);
-        setClient(idClient);
-        setNomContrat(nomContrat);
-        setMontantContrat(montantContrat);
-    }
-
-    /**.
-     * Retourne le montant du contrat
-     * @return le montant du contrat (Double)
-     */
-    public Double getMontantContrat() {
-        return montantContrat;
-    }
-
-    /**.
-     * Ajoute le montant du contrat
-     * @param montantContrat Double, montant du contrat
-     */
-    public void setMontantContrat(final Double montantContrat) {
+        this.nomContrat = nomContrat;
         this.montantContrat = montantContrat;
     }
 
-    /**.
-     * Retourne le nom du contrat
-     * @return le nom du contrat (String)
+    /**
+     * Constructeur pour un contrat déjà préparé avec client.
+     *
+     * @param idContrat     Identifiant du contrat.
+     * @param client        Client associé au contrat.
+     * @param nomContrat    Nom du contrat.
+     * @param montantContrat Montant du contrat.
      */
-    public String getNomContrat() {
-        return nomContrat;
-    }
-
-    /**.
-     * Ajoute le nom du contrat
-     * @param nomContrat Le nom du contrat
-     */
-    public void setNomContrat(final String nomContrat) {
+    public Contrat(final Integer idContrat, final Client client,
+                   final String nomContrat, final Double montantContrat) {
+        this.idContrat = idContrat;
+        this.client = client;
         this.nomContrat = nomContrat;
+        this.montantContrat = montantContrat;
     }
 
-    /**.
-     * Retourne l'identifiant du client
-     * @return l'identifiant du client
-     */
-    public Integer getClient() {
-        return idClient;
-    }
-
-    /**.
-     * Ajoute l'identifiant du client
-     * @param idClient l'identifiant du client
-     */
-    public void setClient(final int idClient) {
-        this.idClient = idClient;
-    }
-
-    /**.
-     * Retourne l'identifiant du contrat
-     * @return l'identifiant du contrat
-     */
     public Integer getIdContrat() {
         return idContrat;
     }
 
-    /**.
-     * Ajoute l'identifiant du contrat
-     * @param idContrat l'identifiant du contrat
-     */
     public void setIdContrat(final Integer idContrat) {
         this.idContrat = idContrat;
     }
 
-    /**.
-     * Retourne les infos de l'objet en string
-     * @return les infos de l'objet en string
-     */
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(final Client client) {
+        this.client = client;
+    }
+
+    public String getNomContrat() {
+        return nomContrat;
+    }
+
+    public void setNomContrat(final String nomContrat) {
+        this.nomContrat = nomContrat;
+    }
+
+    public Double getMontantContrat() {
+        return montantContrat;
+    }
+
+    public void setMontantContrat(final Double montantContrat) {
+        this.montantContrat = montantContrat;
+    }
+
     @Override
     public String toString() {
-        return "Contrat{"
-                +
-                "idClient="
-                + idClient
-                +
-                ", idContrat="
-                + idContrat
-                +
-                ", nomContrat='"
-                + nomContrat
-                + '\''
-                +
-                ", montantContrat="
-                + montantContrat
-                +
+        return "Contrat{" +
+                "idContrat=" + idContrat +
+                ", client=" + (client != null ? client.getIdentifiant() : null) +
+                ", nomContrat='" + nomContrat + '\'' +
+                ", montantContrat=" + montantContrat +
                 '}';
     }
 }
