@@ -1,7 +1,7 @@
 package router;
 
-import controllers.ContactController;
-import controllers.MentionsController;
+import controllers.misc.ContactController;
+import controllers.misc.MentionsController;
 import controllers.PageAccueilController;
 import controllers.ICommand;
 import controllers.client.AddClientController;

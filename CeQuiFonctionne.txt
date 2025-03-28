@@ -1,0 +1,6 @@
+- Connexion / Inscription / Déconnexion d'un utilisateur
+- Tout le CRUD côté Client
+- Afficher / Créer un prospect
+- Afficher les contrats d'un client
+- Appel a l'API Géolocalisation / Météo
+- Si pas connecté, redirection vers page de connexion (basique, pas dans controller)

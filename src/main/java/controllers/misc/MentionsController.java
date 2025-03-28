@@ -1,5 +1,6 @@
-package controllers;
+package controllers.misc;
 
+import controllers.ICommand;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
