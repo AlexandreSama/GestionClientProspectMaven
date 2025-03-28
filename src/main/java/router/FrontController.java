@@ -18,9 +18,9 @@ import controllers.prospect.UpdateProspectController;
 import controllers.prospect.validate.ValidateAddProspectController;
 import controllers.prospect.validate.ValidateDeleteProspectController;
 import controllers.prospect.validate.ValidateUpdateProspectController;
-import controllers.user.LoginController;
-import controllers.user.UserForm;
-import controllers.user.UserLogout;
+import controllers.user.*;
+import controllers.user.validate.UserInscriptionForm;
+import controllers.user.validate.UserLoginForm;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -96,9 +96,11 @@ public class FrontController extends HttpServlet {
         commands.put("prospects/delete/validate", new ValidateDeleteProspectController());
         // Enregistrement des commandes pour l'utilisateur
         commands.put("user/login", new LoginController());
+        commands.put("user/valider-login", new UserLoginForm(connection));
         commands.put("user/logout", new UserLogout());
-//        commands.put("create-user", new CreateUserController(connection));
-        commands.put("valider-login", new UserForm(connection));
+        commands.put("user/inscription", new RegisterController());
+        commands.put("user/valider-inscription", new UserInscriptionForm(connection));
+
         // Enregistrement des commandes a part
         commands.put("contact", new ContactController());
         commands.put("mentions", new MentionsController());

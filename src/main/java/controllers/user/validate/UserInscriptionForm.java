@@ -1,4 +1,4 @@
-package controllers.user;
+package controllers.user.validate;
 
 import controllers.ICommand;
 import de.mkammerer.argon2.Argon2;
@@ -14,13 +14,10 @@ import models.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public class UserForm implements ICommand {
+public class UserInscriptionForm implements ICommand {
 
     /**.
      * La variable pour la connexion BDD
@@ -31,25 +28,30 @@ public class UserForm implements ICommand {
      * Le classique LOGGER
      */
     private static final Logger LOGGER =
-            Logger.getLogger(UserForm.class.getName());
+            Logger.getLogger(UserInscriptionForm.class.getName());
 
     /**.
      * Le constructeur pour le controller
      * @param connection La variable de connexion BDD
      */
-    public UserForm(final Connection connection) {
+    public UserInscriptionForm(final Connection connection) {
         this.connection = connection;
     }
 
-    /**.
-     * Méthode d'éxécution du controller
-     * @param request - La requête reçu
-     * @param response - La réponse a renvoyer si besoin
-     * @return Le nom de la page demandé
-     * @throws Exception - Une exception au cas ou
-     */
-    public String execute(final HttpServletRequest request,
-                          final HttpServletResponse response) throws Exception {
+    @Override
+    public String execute(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws Exception {
+
+        HttpSession session = request.getSession();
+        String tokenFromSession = (String) session.getAttribute("csrfToken");
+        String tokenFromForm = request.getParameter("csrfToken");
+
+        // Vérification du token CSRF
+        if (tokenFromSession == null || !tokenFromSession.equals(tokenFromForm)) {
+            request.setAttribute("error", "Requête invalide (token CSRF non valide).");
+            return "erreur.jsp";
+        }
 
         // Récupération des paramètres depuis le formulaire
         String username = request.getParameter("username");
@@ -85,50 +87,32 @@ public class UserForm implements ICommand {
             request.setAttribute("error", errorMessage.toString());
             // Remet le pseudo pour le réafficher dans l'input
             request.setAttribute("username", username);
-            return "user/login.jsp";
+            return "user/register.jsp";
         }
 
-        try {
-            // Récupération du hash stocké en base pour ce pseudonyme
-            String sql = "SELECT id, username,"
-                    + "pwd FROM user WHERE username = ?";
+        try{
+            Argon2 argon2 = Argon2Factory.create();
+            String hashedPassword = argon2.hash(2, 65536, 1, password.toCharArray());
+
+            String sql = "INSERT INTO user (username, pwd) VALUES (?, ?)";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
+            ps.setString(2, hashedPassword);
+            int result = ps.executeUpdate();
 
-            if (rs.next()) {
-                String storedHash = rs.getString("pwd");
-                Integer userId = rs.getInt("id");
-
-                // Vérification du mot de passe fourni avec le hash stocké
-                Argon2 argon2 = Argon2Factory.create();
-                if (argon2.verify(storedHash, password.toCharArray())) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("user", Arrays.asList(userId, username));
-                    session.setAttribute("hasRights",
-                            Arrays.asList("Supprimer", "Modifier", "Créer"));
-                    session.setAttribute("success",
-                            "Connexion réussie pendant 30min");
-                    argon2.wipeArray(password.toCharArray());
-                    return "index.jsp";
-                } else {
-                    request.setAttribute("error",
-                            "Erreur, veuillez vérifier votre mot de passe");
-                    LOGGER.info("Mot de passe incorrect "
-                            + "pour l'utilisateur " + username);
-                    return "user/login.jsp";
-                }
+            if (result > 0) {
+                request.setAttribute("message", "Votre compté a bien été créer, vous pouvez vous connecter");
+                LOGGER.info("Utilisateur créé avec succès.");
             } else {
-                request.setAttribute("error",
-                        "Erreur, veuillez vérifier votre pseudonyme");
-                LOGGER.info("Aucun utilisateur trouvé pour " + username);
-                return "user/login.jsp";
+                request.setAttribute("error", "Erreur lors de la création de l'utilisateur, veuillez réessayer plus tard");
+                LOGGER.info("Erreur lors de la création de l'utilisateur en dur.");
+                return "index.jsp";
             }
-        } catch (SQLException e) {
-            request.setAttribute("error",
-                    "Erreur SQL: Veuillez réessayer plus tard");
+        } catch (Exception e){
+            request.setAttribute("error", "Erreur SQL, veuillez réessayer plus tard");
             LOGGER.info("Erreur SQL: " + e.getMessage());
-            return "user/login.jsp";
+            return "index.jsp";
         }
+        return "index.jsp";
     }
 }

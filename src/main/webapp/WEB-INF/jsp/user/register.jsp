@@ -14,9 +14,10 @@
 </head>
 <body>
 <%@ include file="../header.jsp" %>
+
 <main>
     <section class="form-container">
-        <h2 class="title">Connexion</h2>
+        <h2 class="title">Inscription</h2>
 
         <!-- Affichage de l'erreur si présente -->
         <% if (request.getAttribute("error") != null) { %>
@@ -25,7 +26,7 @@
         </div>
         <% } %>
 
-        <form class="form" action="?cmd=user/valider-login" method="POST">
+        <form class="form" action="?cmd=user/valider-inscription" method="POST">
             <div class="input-group">
                 <label for="emailField">Pseudonyme</label>
                 <input type="text"
@@ -33,7 +34,7 @@
                        id="emailField"
                        placeholder="Entrer votre pseudonyme"
                        value="${username}"
-                required />
+                       required />
             </div>
             <div class="input-group">
                 <label for="passwordField">Mot de passe</label>
@@ -41,20 +42,21 @@
                        name="password"
                        id="passwordField"
                        placeholder="Entrer votre mot de passe"
-                        />
+                />
                 <div class="forgot">
-                    <a rel="noopener noreferrer" href="?cmd=user/inscription">S'inscrire ?</a>
+                    <a rel="noopener noreferrer" href="?cmd=user/login">Se connecter ?</a>
                 </div>
             </div>
 
             <input type="hidden" name="csrfToken" value="${token}">
 
             <button type="submit" class="sign" id="submitBtn">
-                Se connecter
+                S'inscrire
             </button>
         </form>
     </section>
 </main>
+
 <%@ include file="../footer.jsp" %>
 <script src="js/all.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
