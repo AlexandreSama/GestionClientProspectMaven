@@ -3,7 +3,7 @@
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
 </p>
 
-> Le projet de gestion Client/Prospect avec Maven et Jakarta
+> Le projet de gestion Client/Prospect avec Maven et Jakarta et désormais Hibernate
 
 ## Install
 
